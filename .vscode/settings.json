@@ -1,0 +1,8 @@
+{
+    "python.analysis.typeEvaluation.enableExperimentalFeatures": true,
+    "python.analysis.typeEvaluation.analyzeUnannotatedFunctions": false,
+    "python.analysis.generateWithTypeAnnotation": true,
+    "python.analysis.languageServerMode": "light",
+    "workbench.editor.highlightModifiedTabs": true,
+    "python.analysis.typeCheckingMode": "basic"
+}

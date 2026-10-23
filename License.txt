@@ -1,0 +1,33 @@
+Theme Studio
+
+Copyright (c) 2026 Tommi Jalkanen
+
+All Rights Reserved.
+
+This software and all associated source code, binaries,
+documentation, graphics, and other related materials are
+the exclusive property of Tommi Jalkanen.
+
+No permission is granted to use, copy, modify, merge,
+publish, distribute, sublicense, reverse engineer,
+decompile, disassemble, sell, or create derivative works
+based on this software or its source code without prior
+written permission from the copyright holder.
+
+Unauthorized reproduction, distribution, or modification
+of this software, in whole or in part, is strictly prohibited.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+NONINFRINGEMENT.
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM,
+DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH
+THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+For licensing inquiries, contact:
+
+Tommi Jalkanen
+tommi.jalkanen@gmail.com
