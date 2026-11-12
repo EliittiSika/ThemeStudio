@@ -1067,7 +1067,8 @@ class ThemeApp(ctk.CTk):
 
         self.color_swatch.configure(fg_color=hex_upper)
         self.lbl_hex_color.configure(text=hex_upper)
-
+        self.hex_entry.delete(0, "end")
+        self.hex_entry.insert(0, hex_upper)
         if self.current_state["color_taskbar"]:
             self.dark_switch.select()
             self.current_state["dark_mode"] = True
