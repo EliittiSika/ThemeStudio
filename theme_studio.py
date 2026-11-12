@@ -765,6 +765,10 @@ class ThemeApp(ctk.CTk):
     0,
     "#0078D4"
 )
+        self.hex_entry.bind(
+             "<Return>",
+             lambda event: self.apply_hex_color()
+) 
         ctk.CTkButton(
             picker_row,
             text="Apply",
@@ -1031,33 +1035,39 @@ class ThemeApp(ctk.CTk):
                 fg_color=hex_val, hover_color=hex_val,
                 command=lambda h=hex_val: self.apply_selected_color(h)
             ).pack(side="left", padx=2)
+   
     def apply_hex_color(self):
+        print("APPLY HEX CALLED")
+
         hex_color = self.hex_entry.get().strip().upper()
+        print(f"HEX INPUT: {hex_color}")
 
         if not hex_color.startswith("#"):
-         hex_color = "#" + hex_color
+            hex_color = "#" + hex_color
 
         if len(hex_color) != 7:
-         messagebox.showerror(
-            "Invalid HEX",
-            "HEX color must be in format #RRGGBB"
+            messagebox.showerror(
+                "Invalid HEX",
+                "HEX color must be in format #RRGGBB"
         )
-        return
+            return
 
         try:
-         int(hex_color[1:], 16)
+            int(hex_color[1:], 16)
         except ValueError:
-         messagebox.showerror(
+            messagebox.showerror(
             "Invalid HEX",
             "HEX color is not valid."
         )
-        return
+            return
 
+        print("CALLING APPLY_SELECTED_COLOR")
         self.apply_selected_color(hex_color)
+    
     def open_color_picker(self):
         color = colorchooser.askcolor(initialcolor=self.current_state["accent_color"], title="Select Accent Color")
         if color and color[1]:
-            self.apply_selected_color(color[1].upper())
+         self.apply_selected_color(color[1].upper())
 
     def apply_selected_color(self, hex_color: str):
         hex_upper = hex_color.upper()
