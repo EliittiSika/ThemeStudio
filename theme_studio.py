@@ -667,6 +667,7 @@ class ThemeApp(ctk.CTk):
             "system_icons": {"this_pc": None, "recycle_bin": None, "user_files": None},
             "folders": {},
             "font_family": "Segoe UI",
+            "font_style": "Regular",
             "font_color": "#FFFFFF"
         }
         self.icon_preview_labels = {}
@@ -807,6 +808,32 @@ class ThemeApp(ctk.CTk):
         self.font_var = ctk.StringVar(value="Segoe UI")
         self.font_dropdown = ctk.CTkComboBox(font_row, variable=self.font_var, values=sorted(safe_fonts), command=self.apply_font)
         self.font_dropdown.pack(side="left", padx=(0, 20))
+        ctk.CTkLabel(
+        font_row,
+        text="Style:"
+    ).pack(side="left", padx=(0, 10))
+
+        self.font_style_var = ctk.StringVar(
+    value="Regular"
+)
+
+        self.font_style_dropdown = ctk.CTkComboBox(
+    font_row,
+    variable=self.font_style_var,
+    values=[
+        "Regular",
+        "Bold",
+        "Italic",
+        "Bold Italic"
+    ],
+    width=120,
+    command=self.apply_font_style
+)
+
+        self.font_style_dropdown.pack(
+    side="left",
+    padx=(0, 20)
+)
 
         ctk.CTkLabel(font_row, text="Color:").pack(side="left", padx=(0, 10))
         self.font_color_swatch = ctk.CTkFrame(font_row, width=24, height=24, corner_radius=12, fg_color="#FFFFFF", border_width=1, border_color="gray")
@@ -945,10 +972,21 @@ class ThemeApp(ctk.CTk):
             self.view_profiles.grid(row=0, column=1, sticky="nsew", padx=20, pady=20)
 
     # --- FONTS & COLORS ---
+ 
     def apply_font(self, choice=None):
+   
         font_name = self.font_var.get()
         self.current_state["font_family"] = font_name
         self.update_demo_text()
+
+    def apply_font_style(self, choice=None):
+        self.current_state["font_style"] = (
+        self.font_style_var.get()
+    )
+
+        self.update_demo_text()
+
+
 
     def open_font_color_picker(self):
         color = colorchooser.askcolor(initialcolor=self.current_state["font_color"], title="Select Font Color")
@@ -961,9 +999,34 @@ class ThemeApp(ctk.CTk):
     def update_demo_text(self):
         f_family = self.current_state["font_family"]
         f_color = self.current_state["font_color"]
-        self.lbl_demo_text.configure(font=ctk.CTkFont(family=f_family, size=16), text_color=f_color)
-        
-    # --- GALLERY LOGIC ---
+
+        f_style = self.current_state.get(
+            "font_style",
+            "Regular"
+        )
+
+        weight = "normal"
+        slant = "roman"
+
+        if f_style == "Bold":
+         weight = "bold"
+
+        elif f_style == "Italic":
+         slant = "italic"
+
+        elif f_style == "Bold Italic":
+         weight = "bold"
+        slant = "italic"
+
+        self.lbl_demo_text.configure(
+        font=ctk.CTkFont(
+            family=f_family,
+            size=16,
+            weight=weight,
+            slant=slant
+        ),
+        text_color=f_color
+    )
  
     def change_gallery_dir(self):
             global GALLERY_DIR
@@ -1037,10 +1100,10 @@ class ThemeApp(ctk.CTk):
             ).pack(side="left", padx=2)
    
     def apply_hex_color(self):
-        print("APPLY HEX CALLED")
+        
 
         hex_color = self.hex_entry.get().strip().upper()
-        print(f"HEX INPUT: {hex_color}")
+        
 
         if not hex_color.startswith("#"):
             hex_color = "#" + hex_color
@@ -1061,7 +1124,7 @@ class ThemeApp(ctk.CTk):
         )
             return
 
-        print("CALLING APPLY_SELECTED_COLOR")
+        
         self.apply_selected_color(hex_color)
     
     def open_color_picker(self):
