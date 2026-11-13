@@ -850,14 +850,47 @@ class ThemeApp(ctk.CTk):
 )
 
         self.preview_frame.pack(
-    fill="x",
-    padx=15,
-    pady=(10, 15)
+            fill="x",
+            padx=15,
+            pady=(10, 15)
+        )
+        self.preview_titlebar = ctk.CTkFrame(
+    self.preview_frame,
+    height=30,
+    fg_color=self.current_state["accent_color"]
 )
+
+        self.preview_titlebar.pack(
+            fill="x",
+            padx=2,
+            pady=(2, 10)
+        )
+
+        self.preview_window_text = ctk.CTkLabel(
+            self.preview_titlebar,
+            text="File Explorer",
+            text_color="white"
+        )
+
+        self.preview_window_text.pack(
+            side="left",
+            padx=10
+        )
+
+        self.preview_window_buttons = ctk.CTkLabel(
+            self.preview_titlebar,
+            text="─ □ ✕",
+            text_color="white"
+        )
+
+        self.preview_window_buttons.pack(
+            side="right",
+            padx=10
+        )
 
         self.preview_title = ctk.CTkLabel(
     self.preview_frame,
-    text="Theme Studio Preview",
+    text="File Explorer",
     font=ctk.CTkFont(
         size=16,
         weight="bold"
@@ -1299,7 +1332,12 @@ class ThemeApp(ctk.CTk):
         if hasattr(self, "preview_button"):
             self.preview_button.configure(
                 fg_color=hex_upper
-            )    
+            )
+            
+        if hasattr(self, "preview_titlebar"):
+            self.preview_titlebar.configure(
+                fg_color=hex_upper
+        )    
 
         self.color_swatch.configure(fg_color=hex_upper)
         self.lbl_hex_color.configure(text=hex_upper)
