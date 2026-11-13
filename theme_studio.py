@@ -1349,17 +1349,28 @@ class ThemeApp(ctk.CTk):
     def open_color_picker(self):
             color = colorchooser.askcolor(initialcolor=self.current_state["accent_color"], title="Select Accent Color")
             if color and color[1]:
-                self.apply_selected_color(color[1].upper()
-            )
+                self.apply_selected_color[1].upper(
+        )
 
     def save_undo_state(self):
             self.undo_state = self.current_state.copy()
             
     def toggle_restore_points(self):
-        self.current_state["create_restore_point"] = (
-            self.create_restore_point_var.get()
-        )        
+            self.current_state["create_restore_point"] 
+            self.create_restore_point_var.get(
+        )
         
+            self.restore_status = ctk.CTkLabel(
+            font_frame,
+            text="Restore Point: Ready",
+            text_color="gray"
+        )
+
+            self.restore_status.pack(
+            anchor="w",
+            padx=15,
+            pady=(0, 10)
+        )        
         
     def undo_last_change(self):
             if not self.undo_state:
@@ -1376,7 +1387,25 @@ class ThemeApp(ctk.CTk):
     def apply_selected_color(self, hex_color: str):
         self.save_undo_state()
         
+        self.create_restore_point(
+            "Accent Color Change"
+        )    
         
+    def create_restore_point(self, description):
+        if not self.current_state.get(
+        "create_restore_point",
+        True
+        ):
+            return
+
+        print(
+            f"RESTORE POINT: {description}"
+        )
+
+        if hasattr(self, "restore_status"):
+         self.restore_status.configure(
+            text=f"Restore Point: {description}"
+        )    
         hex_upper = hex_color.upper()
         self.current_state["accent_color"] = hex_upper
         self.current_state["color_taskbar"] = bool(self.chk_taskbar.get())
@@ -1437,7 +1466,7 @@ class ThemeApp(ctk.CTk):
             "font_style",
             "Regular"),
             "font_color": self.current_state.get(
-                "font_color", "#FFFFFF"),
+            "font_color", "#FFFFFF"),
             "create_restore_point": True
         }
 
