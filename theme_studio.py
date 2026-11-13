@@ -1354,6 +1354,11 @@ class ThemeApp(ctk.CTk):
 
     def save_undo_state(self):
             self.undo_state = self.current_state.copy()
+            
+    def toggle_restore_points(self):
+        self.current_state["create_restore_point"] = (
+            self.create_restore_point_var.get()
+        )        
         
         
     def undo_last_change(self):
@@ -1429,11 +1434,13 @@ class ThemeApp(ctk.CTk):
             "folders": self.current_state["folders"],
             "font_family": self.current_state.get("font_family", "Segoe UI"),
             "font_style": self.current_state.get(
-    "font_style",
-    "Regular"
-),
-            "font_color": self.current_state.get("font_color", "#FFFFFF")
+            "font_style",
+            "Regular"),
+            "font_color": self.current_state.get(
+                "font_color", "#FFFFFF"),
+            "create_restore_point": True
         }
+
         try:
             with open(file_path, "w", encoding="utf-8") as f:
                 json.dump(payload, f, indent=4, ensure_ascii=False)
