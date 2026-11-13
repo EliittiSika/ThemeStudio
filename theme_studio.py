@@ -1166,10 +1166,11 @@ class ThemeApp(ctk.CTk):
             self.current_state["font_color"] = hex_upper
             self.font_color_swatch.configure(fg_color=hex_upper)
             self.update_demo_text()
-
-        def update_demo_text(self):
-            f_family = self.current_state["font_family"]
-            f_color = self.current_state["font_color"]
+    def update_demo_text(self):        
+        print("UPDATE_DEMO_TEXT CALLED")
+        
+        f_family = self.current_state["font_family"]
+        f_color = self.current_state["font_color"]
 
         f_style = self.current_state.get(
         "font_style",
