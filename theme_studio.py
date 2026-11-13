@@ -842,6 +842,56 @@ class ThemeApp(ctk.CTk):
         
         self.lbl_demo_text = ctk.CTkLabel(font_frame, text="Sample text looks like this.", font=ctk.CTkFont(family="Segoe UI", size=14), text_color="#FFFFFF")
         self.lbl_demo_text.pack(anchor="w", padx=15, pady=(10, 10))
+    # --- LIVE PREVIEW ---
+
+        self.preview_frame = ctk.CTkFrame(
+        font_frame,
+        height=180
+)
+
+        self.preview_frame.pack(
+    fill="x",
+    padx=15,
+    pady=(10, 15)
+)
+
+        self.preview_title = ctk.CTkLabel(
+    self.preview_frame,
+    text="Theme Studio Preview",
+    font=ctk.CTkFont(
+        size=16,
+        weight="bold"
+    )
+)
+
+        self.preview_title.pack(
+    anchor="w",
+    padx=15,
+    pady=(12, 8)
+)
+
+        self.preview_body = ctk.CTkLabel(
+    self.preview_frame,
+    text="Preview text follows current font settings."
+)
+
+        self.preview_body.pack(
+    anchor="w",
+    padx=15,
+    pady=(0, 10)
+)
+
+        self.preview_accent = ctk.CTkFrame(
+    self.preview_frame,
+    height=20,
+    fg_color=self.current_state["accent_color"]
+)
+
+        self.preview_accent.pack(
+    fill="x",
+    padx=15,
+    pady=(0, 12)
+)        
 
 
         # 1.5 IMAGE GALLERY
@@ -1004,6 +1054,15 @@ class ThemeApp(ctk.CTk):
             "font_style",
             "Regular"
         )
+        self.preview_body.configure(
+    text_color=f_color,
+    font=ctk.CTkFont(
+        family=f_family,
+        size=14,
+        weight=weight,
+        slant=slant
+    )
+)
 
         weight = "normal"
         slant = "roman"
@@ -1137,6 +1196,10 @@ class ThemeApp(ctk.CTk):
         self.current_state["accent_color"] = hex_upper
         self.current_state["color_taskbar"] = bool(self.chk_taskbar.get())
         self.current_state["color_borders"] = bool(self.chk_borders.get())
+        if hasattr(self, "preview_accent"):
+            self.preview_accent.configure(
+        fg_color=hex_upper
+    )
 
         self.color_swatch.configure(fg_color=hex_upper)
         self.lbl_hex_color.configure(text=hex_upper)
