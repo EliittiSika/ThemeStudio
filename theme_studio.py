@@ -857,6 +857,21 @@ class ThemeApp(ctk.CTk):
             padx=15,
             pady=(0, 10)
         )
+        self.create_restore_point_var = ctk.BooleanVar(
+            value=True
+    )
+
+        self.restore_checkbox = ctk.CTkCheckBox(
+            font_frame,
+            text="Create restore point before system changes",
+            variable=self.create_restore_point_var
+        )
+
+        self.restore_checkbox.pack(
+            anchor="w",
+            padx=15,
+            pady=(0, 10)
+    )    
         
     # --- LIVE PREVIEW ---
 
