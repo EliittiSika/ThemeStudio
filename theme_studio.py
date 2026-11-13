@@ -670,6 +670,7 @@ class ThemeApp(ctk.CTk):
             "font_style": "Regular",
             "font_color": "#FFFFFF"
         }
+        self.undo_state = None
         self.icon_preview_labels = {}
         self.cursor_labels = {}
         self.gallery_images = []
@@ -841,7 +842,22 @@ class ThemeApp(ctk.CTk):
         ctk.CTkButton(font_row, text="Change Color", width=100, command=self.open_font_color_picker).pack(side="left")
         
         self.lbl_demo_text = ctk.CTkLabel(font_frame, text="Sample text looks like this.", font=ctk.CTkFont(family="Segoe UI", size=14), text_color="#FFFFFF")
-        self.lbl_demo_text.pack(anchor="w", padx=15, pady=(10, 10))
+        self.lbl_demo_text.pack(
+            anchor="w", 
+            padx=15, 
+            pady=(10, 10)
+        )
+        
+        ctk.CTkButton(
+            font_frame,
+            text="↶ Undo Last Change",
+            command=self.undo_last_change
+        ).pack(
+            anchor="w",
+            padx=15,
+            pady=(0, 10)
+        )
+        
     # --- LIVE PREVIEW ---
 
         self.preview_frame = ctk.CTkFrame(
@@ -1315,11 +1331,31 @@ class ThemeApp(ctk.CTk):
         self.apply_selected_color(hex_color)
     
     def open_color_picker(self):
-        color = colorchooser.askcolor(initialcolor=self.current_state["accent_color"], title="Select Accent Color")
-        if color and color[1]:
-         self.apply_selected_color(color[1].upper())
+            color = colorchooser.askcolor(initialcolor=self.current_state["accent_color"], title="Select Accent Color")
+            if color and color[1]:
+                self.apply_selected_color(color[1].upper()
+            )
 
+    def save_undo_state(self):
+            self.undo_state = self.current_state.copy()
+        
+        
+    def undo_last_change(self):
+            if not self.undo_state:
+                return
+
+            self.current_state = self.undo_state.copy()
+
+            self.apply_selected_color(
+            self.current_state["accent_color"]
+            )
+
+            self.update_demo_text()
+        
     def apply_selected_color(self, hex_color: str):
+        self.save_undo_state()
+        
+        
         hex_upper = hex_color.upper()
         self.current_state["accent_color"] = hex_upper
         self.current_state["color_taskbar"] = bool(self.chk_taskbar.get())
