@@ -868,7 +868,19 @@ class ThemeApp(ctk.CTk):
     anchor="w",
     padx=15,
     pady=(12, 8)
-)
+        )
+        self.preview_subtext = ctk.CTkLabel(
+    self.preview_frame,
+    text="Live preview of current theme settings.",
+    text_color="gray"
+    )
+
+        self.preview_subtext.pack(
+            anchor="w",
+            padx=15,
+            pady=(0, 10)
+        )
+
 
         self.preview_body = ctk.CTkLabel(
     self.preview_frame,
@@ -891,7 +903,103 @@ class ThemeApp(ctk.CTk):
     fill="x",
     padx=15,
     pady=(0, 12)
-)        
+)
+     
+        self.preview_entry.pack(
+            fill="x",
+            padx=15,
+            pady=(10, 8)
+        )
+
+        self.preview_checkbox = ctk.CTkCheckBox(
+            self.preview_frame,
+            text="Preview checkbox"
+        )
+
+        self.preview_checkbox.pack(
+            anchor="w",
+            padx=15,
+            pady=(0, 8)
+        )
+
+        self.preview_checkbox.select()
+
+        self.preview_button = ctk.CTkButton(
+            self.preview_frame,
+            text="Accent Button",
+            fg_color=self.current_state["accent_color"]
+        )
+
+        self.preview_button.pack(
+            anchor="w",
+            padx=15,
+            pady=(0, 12)
+        )
+        
+        self.preview_entry.pack(
+            fill="x",
+            padx=15,
+            pady=(0, 8)    
+        )
+
+        self.preview_checkbox = ctk.CTkCheckBox(
+            self.preview_frame,
+            text="Enable feature"
+        )
+
+        self.preview_checkbox.pack(
+            anchor="w",
+            padx=15,
+            pady=(0, 8)
+        )
+
+        self.preview_checkbox.select()
+
+        self.preview_secondary_button = ctk.CTkButton(
+            self.preview_frame,
+            text="Secondary Action",
+            fg_color="gray35"
+        )
+
+        self.preview_secondary_button.pack(
+            anchor="w",
+            padx=15,
+            pady=(0, 12)
+        )
+           
+        self.preview_entry = ctk.CTkEntry(
+            self.preview_frame,
+            placeholder_text="Preview text box"
+        )
+
+        self.preview_entry.pack(
+                fill="x",
+                padx=15,
+                pady=(5, 10)
+        )
+
+        self.preview_checkbox = ctk.CTkCheckBox(
+                self.preview_frame,
+                text="Preview checkbox"
+        )
+
+        self.preview_checkbox.pack(
+                anchor="w",
+                padx=15,
+                pady=(0, 10)
+        )
+
+        self.preview_button = ctk.CTkButton(
+                self.preview_frame,
+                text="Accent Button",
+                fg_color=self.current_state["accent_color"]
+        )
+
+        self.preview_button.pack(
+                anchor="w",
+                padx=15,
+                pady=(0, 12)
+        )        
 
 
         # 1.5 IMAGE GALLERY
@@ -1032,7 +1140,7 @@ class ThemeApp(ctk.CTk):
     def apply_font_style(self, choice=None):
         self.current_state["font_style"] = (
         self.font_style_var.get()
-    )
+)
 
         self.update_demo_text()
 
@@ -1046,46 +1154,69 @@ class ThemeApp(ctk.CTk):
             self.font_color_swatch.configure(fg_color=hex_upper)
             self.update_demo_text()
 
-    def update_demo_text(self):
-        f_family = self.current_state["font_family"]
-        f_color = self.current_state["font_color"]
+        def update_demo_text(self):
+            f_family = self.current_state["font_family"]
+            f_color = self.current_state["font_color"]
 
         f_style = self.current_state.get(
-            "font_style",
-            "Regular"
+        "font_style",
+        "Regular"
         )
-        self.preview_body.configure(
-    text_color=f_color,
-    font=ctk.CTkFont(
-        family=f_family,
-        size=14,
-        weight=weight,
-        slant=slant
-    )
-)
 
         weight = "normal"
         slant = "roman"
 
         if f_style == "Bold":
-         weight = "bold"
+            weight = "bold"
 
         elif f_style == "Italic":
-         slant = "italic"
+            slant = "italic"
 
         elif f_style == "Bold Italic":
-         weight = "bold"
+            weight = "bold"
         slant = "italic"
 
         self.lbl_demo_text.configure(
-        font=ctk.CTkFont(
-            family=f_family,
-            size=16,
-            weight=weight,
-            slant=slant
-        ),
-        text_color=f_color
-    )
+                font=ctk.CTkFont(
+                family=f_family,
+                size=16,
+                weight=weight,
+                slant=slant
+            ),
+            text_color=f_color
+        )
+
+        if hasattr(self, "preview_body"):
+            self.preview_body.configure(
+                text_color=f_color,
+                font=ctk.CTkFont(
+                    family=f_family,
+                    size=14,
+                    weight=weight,
+                    slant=slant
+                )
+            )
+
+        if hasattr(self, "preview_title"):
+            self.preview_title.configure(
+                text_color=f_color,
+                font=ctk.CTkFont(
+                    family=f_family,
+                    size=18,
+                    weight=weight,
+                    slant=slant
+                )
+            )
+
+        if hasattr(self, "preview_entry"):
+            self.preview_entry.configure(
+                font=ctk.CTkFont(
+                    family=f_family,
+                    size=13,
+                    weight=weight,
+                    slant=slant
+                )
+            )
  
     def change_gallery_dir(self):
             global GALLERY_DIR
@@ -1198,8 +1329,13 @@ class ThemeApp(ctk.CTk):
         self.current_state["color_borders"] = bool(self.chk_borders.get())
         if hasattr(self, "preview_accent"):
             self.preview_accent.configure(
-        fg_color=hex_upper
-    )
+                fg_color=hex_upper
+            )
+            
+        if hasattr(self, "preview_button"):
+            self.preview_button.configure(
+                fg_color=hex_upper
+            )    
 
         self.color_swatch.configure(fg_color=hex_upper)
         self.lbl_hex_color.configure(text=hex_upper)
