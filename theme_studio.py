@@ -1175,6 +1175,10 @@ class ThemeApp(ctk.CTk):
             "system_icons": self.current_state["system_icons"],
             "folders": self.current_state["folders"],
             "font_family": self.current_state.get("font_family", "Segoe UI"),
+            "font_style": self.current_state.get(
+    "font_style",
+    "Regular"
+),
             "font_color": self.current_state.get("font_color", "#FFFFFF")
         }
         try:
@@ -1246,9 +1250,19 @@ class ThemeApp(ctk.CTk):
                 self.apply_selected_color(accent_hex)
 
             font_fam = data.get("font_family")
+            
             if font_fam:
                 self.font_var.set(font_fam)
                 self.current_state["font_family"] = font_fam
+                
+            font_style = data.get("font_style")
+            
+
+            if font_style:
+                self.font_style_var.set(font_style)
+                self.current_state["font_style"] = font_style
+                self.update_demo_text()
+
             f_color = data.get("font_color")
             if f_color:
                 self.current_state["font_color"] = f_color
