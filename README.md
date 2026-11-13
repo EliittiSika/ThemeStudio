@@ -6,6 +6,55 @@
 
 ## ✨ Key Features in V.2
 
+## 📸 Visual Tour & User Guide / Kuvallinen käyttöohje
+
+### 1. Theme, Taskbar & Explorer (`01_Theme_and_Taskbar.png`)
+![1. Theme, Taskbar & Explorer](Kuvaohjeet/01_Theme_and_Taskbar.png)
+* **EN:** Toggle Windows Dark Mode, apply live Win32 Taskbar glass effects (*Clear, Blur, Acrylic*), switch File Explorer color modes and compact spacing, extract a 5-shade accent palette from your wallpaper, preview system fonts in real time, and export colors to CSS or Tailwind.
+* **FI:** Hallitse Windowsin tummaa tilaa, tehtäväpalkin reaaliaikaisia lasitehosteita (*Clear, Blur, Acrylic*), Resurssienhallinnan teemaa ja tiivistettyä näkymää, taustakuvan 5 sävyn automaattista väripalettia, fonttien esikatselua sekä CSS / Tailwind -koodivientiä.
+
+---
+
+### 2. Interactive Image Gallery (`02_Image_Gallery.png`)
+![2. Interactive Image Gallery](Kuvaohjeet/02_Image_Gallery.png)
+* **EN:** Browse wallpapers across folders and subfolders, open full-resolution Lightbox previews, extract color palettes without changing your active wallpaper, or send any image directly to the Cursor Creator.
+* **FI:** Selaa taustakuvia alikansioineen, avaa kuvat suurennetussa Lightbox-esikatselussa, poimi väripaletti suoraan kuvasta vaihtamatta taustakuvaa tai lähetä kuva yhdellä klikkauksella kursorinluontiin.
+
+---
+
+### 3. System Icons & Packs (`03_System_Icons.png`)
+![3. System Icons & Packs](Kuvaohjeet/03_System_Icons.png)
+* **EN:** Customize desktop system icons (*This PC, Recycle Bin, User's Files*) using any `.png` or `.ico` file (automatically converted to multi-size `.ico`), and import or export portable `.zip` Icon Packs.
+* **FI:** Mukauta työpöydän järjestelmäkuvakkeet (*Tämä tietokone, Roskakori, Käyttäjän kansio*) suoraan `.png`- tai `.ico`-kuvilla ja tuo tai vie valmiita `.zip`-kuvakepaketteja.
+
+---
+
+### 4. Mouse Pointers & `.cur` Cursor Creator (`04_Cursors_and_Creator.png`)
+![4. Mouse Pointers & Cursor Creator](Kuvaohjeet/04_Cursors_and_Creator.png)
+* **EN:** Assign custom `.cur` and `.ani` pointers to Windows cursor states, or convert any `.png`/`.jpg` image into a native Windows `.cur` cursor (`32x32`, `48x48`, `64x64`) with an interactive Hotspot `(X, Y)` crosshair preview.
+* **FI:** Vaihda Windowsin hiiriosoittimet (`.cur` / `.ani`) tai luo omia aitoja `.cur`-kursoreita suoraan mistä tahansa kuvasta säädettävällä klikkauspisteellä (Hotspot X, Y).
+
+---
+
+### 5. Custom Folder Icons — Drag & Drop (`05_Folder_Icons.png`)
+![5. Custom Folder Icons](Kuvaohjeet/05_Folder_Icons.png)
+* **EN:** Drag and drop any folder and a `.png`/`.ico` image directly into the window to generate a multi-size icon and apply it immediately via hidden `desktop.ini` attributes.
+* **FI:** Raahaa (Drag & Drop) mikä tahansa kansio ja kuva suoraan ikkunaan, niin ohjelma luo monikokoisen kuvakkeen ja asettaa sen kansiolle automaattisesti `desktop.ini`-määrityksellä.
+
+---
+
+### 6. Batch Image Processing Studio (`06_Batch_Image_Processing.png`)
+![6. Batch Image Processing Studio](Kuvaohjeet/06_Batch_Image_Processing.png)
+* **EN:** Batch convert entire folders of images (`PNG`, `JPEG`, `WEBP`, `BMP`, multi-size `ICO`), resize or center-crop to exact dimensions, auto-fix phone EXIF orientation, and strip metadata to save space.
+* **FI:** Muunna kokonaisten kansioiden kuvat eräajona eri formaatteihin (myös monikokoisiksi `.ico`-kuvakkeiksi), muuta kokoa, rajaa keskitetysti, korjaa puhelinkuvien EXIF-asento ja poista metadata.
+
+---
+
+### 7. Theme Profiles, `.ZIP` Packs & Day/Night Scheduler (`07_Profiles_and_Scheduler.png`)
+![7. Theme Profiles & Scheduler](Kuvaohjeet/07_Profiles_and_Scheduler.png)
+* **EN:** Save and load complete desktop setups as JSON profiles, bundle self-contained `.zip` Theme Packs (including wallpaper, icons, and cursors) for easy sharing, and schedule automatic Day/Night theme switching.
+* **FI:** Tallenna koko työpöydän kokoonpano JSON-profiileiksi, pakkaa kaikki tiedostot jaettavaksi `.zip`-teemapaketiksi tai ajasta teema vaihtumaan automaattisesti päivä- ja yöajan mukaan.
+
 ### 1. 🎨 Theme, Taskbar Transparency & File Explorer Manager
 * **System & Explorer Theme Control:** Switch seamlessly between **Dark**, **Light**, and **Mixed (Dark System / Light Apps)** modes, and toggle **Compact File Explorer Spacing**. Includes a one-click `explorer.exe` restart utility.
 * **Live Taskbar Transparency & Glass Engine (Win32 DWM):** Apply real-time **Clear Transparent**, **Blur**, **Acrylic**, or **Opaque** composition effects directly to the Windows Taskbar (`Shell_TrayWnd`) with customizable opacity and a background keep-alive option.
