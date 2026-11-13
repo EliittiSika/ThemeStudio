@@ -904,44 +904,8 @@ class ThemeApp(ctk.CTk):
     padx=15,
     pady=(0, 12)
 )
-     
-        self.preview_entry.pack(
-            fill="x",
-            padx=15,
-            pady=(10, 8)
-        )
 
-        self.preview_checkbox = ctk.CTkCheckBox(
-            self.preview_frame,
-            text="Preview checkbox"
-        )
-
-        self.preview_checkbox.pack(
-            anchor="w",
-            padx=15,
-            pady=(0, 8)
-        )
-
-        self.preview_checkbox.select()
-
-        self.preview_button = ctk.CTkButton(
-            self.preview_frame,
-            text="Accent Button",
-            fg_color=self.current_state["accent_color"]
-        )
-
-        self.preview_button.pack(
-            anchor="w",
-            padx=15,
-            pady=(0, 12)
-        )
-        
-        self.preview_entry.pack(
-            fill="x",
-            padx=15,
-            pady=(0, 8)    
-        )
-
+ 
         self.preview_checkbox = ctk.CTkCheckBox(
             self.preview_frame,
             text="Enable feature"
