@@ -1,8 +1,16 @@
+# Python & Virtual Environment
 .venv/
-build/
-dist/
-Output/
 __pycache__/
 *.pyc
 *.pyo
+
+# PyInstaller & Inno Setup build outputs
+build/
+dist/
+Output/
+*.spec
+*.exe
+
+# Logs & temporary wizard assets
 *.log
+wizard_logo.bmp
