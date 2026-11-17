@@ -2,7 +2,7 @@
 ; Tekijä: tommi.jalkanen@gmail.com
 
 #define MyAppName "Theme Studio"
-#define MyAppVersion "2.0"
+#define MyAppVersion "2.1"
 #define MyAppPublisher "Tommi Jalkanen"
 #define MyAppExeName "theme_studio.exe"
 
@@ -14,7 +14,7 @@ AppPublisher={#MyAppPublisher}
 DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=.
-OutputBaseFilename=ThemeStudio_Installer_v2.0
+OutputBaseFilename=ThemeStudio_Installer_v2.1
 
 ; 1. Asennustiedoston (.exe) oma kuvake:
 SetupIconFile=installer_icon.ico

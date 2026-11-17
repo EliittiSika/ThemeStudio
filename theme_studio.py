@@ -34,6 +34,412 @@ import customtkinter as ctk
 from tkinter import filedialog, messagebox, colorchooser
 from PIL import Image, ImageOps, ImageDraw
 import windnd
+from typing import cast
+import locale
+
+def get_system_language() -> str:
+    try:
+        lang_id = ctypes.windll.kernel32.GetUserDefaultUILanguage()
+        lang_code = locale.windows_locale.get(lang_id, "en_US")
+
+        if lang_code.lower().startswith("fi"):
+            return "FI"
+
+        return "EN"
+
+    except Exception:
+        return "EN"
+
+
+LANG = get_system_language()
+
+TEXTS = {
+    "FI": {
+        "theme_title": "Theme Studio V.2",
+        "browse": "Selaa...",
+        "ready": "Valmis.",
+        "image_gallery": "Kuvagalleria",
+        "wallpaper": "Taustakuva",
+        "apply": "Käytä",
+        "save": "Tallenna",
+        "cancel": "Peruuta",
+        "close": "Sulje",
+        "start_processing": "Aloita käsittely",
+        "source_folder": "Lähdekansio:",
+        "destination_folder": "Kohdekansio:",
+        "theme_taskbar": "Teema, tehtäväpalkki ja resurssienhallinta",
+        "sidebar_theme": "Teema, tehtäväpalkki ja resurssienhallinta",
+        "sidebar_gallery": "Kuvagalleria",
+        "sidebar_icons": "Järjestelmäkuvakkeet ja paketit",
+        "sidebar_cursors": "Osoittimet ja luonti",
+        "sidebar_folders": "Kansiokuvakkeet",
+        "sidebar_batch": "Massakuvakäsittely",
+        "sidebar_profiles": "Profiilit ja päivä/yö",
+        "theme_page_title": "Teema, resurssienhallinta ja värit",
+        "windows_dark_mode": "Windows tumma tila",
+        "system_transparency": "Tehtäväpalkin läpinäkyvyys",
+        "taskbar_glass_title": "Tehtäväpalkin läpinäkyvyys ja lasiefekti",
+        "effect_mode": "Tehoste",
+        "opacity": "Läpinäkyvyys",
+        "apply_taskbar": "Käytä tehtäväpalkkiin",
+        "keep_effect_active": "Pidä tehoste aktiivisena",
+        "explorer_title": "Resurssienhallinnan teema ja asettelu",
+        "theme_mode": "Teema",
+        "compact_spacing": "Tiivis asettelu",
+        "restart_explorer": "Käynnistä Explorer uudelleen",
+        "wallpaper_title": "Työpöydän taustakuva ja väripaletti",
+        "no_file_selected": "Tiedostoa ei ole valittu",
+        "browse_wallpaper": "Valitse taustakuva...",
+        "fit": "Sovitus",
+        "auto_wallpaper_color": "Käytä taustakuvan pääväriä automaattisesti",
+        "palette_hint": "Valitse taustakuva nähdäksesi värit",
+        "accent_title": "Windows-korostusväri ja paletti",
+        "apply": "Käytä",
+        "pick_color": "Valitse väri...",
+        "colorize_taskbar": "Väritä tehtäväpalkki ja Käynnistä-valikko",
+        "colorize_borders": "Väritä otsikkopalkit ja ikkunan reunat",
+        "font_preview_title": "Sovelluksen fontti ja esikatselu",
+        "shades": "Sävyt",
+        "font": "Fontti",
+        "style": "Tyyli",
+        "color": "Väri",
+        "change_color": "Vaihda väri",
+        "sample_text": "Esimerkkiteksti näyttää tältä.",
+        "undo_last_change": "Kumoa viimeisin muutos",
+        "restore_point_before_changes": "Luo palautuspiste ennen järjestelmämuutoksia",
+        "restore_point_ready": "Palautuspiste: Valmis",
+        "preview_window_title": "Resurssienhallinta - esikatselu",
+        "preview_title": "Resurssienhallinta",
+        "preview_subtext": "Esikatselu nykyisestä teemasta, korostusväristä ja fontista.",
+        "preview_body": "Esikatseluteksti käyttää nykyisiä fontti-, tyyli- ja väriasetuksia.",
+        "preview_window_title": "Resurssienhallinta - esikatselu",
+        "preview_title": "Resurssienhallinta",
+        "preview_subtext": "Esikatselu nykyisestä teemasta, korostusväristä ja fonttiasetuksista.",
+        "preview_body": "Esikatseluteksti käyttää nykyisiä fontti-, tyyli- ja väriasetuksia.",
+        "preview_textbox": "Esikatselutekstikenttä...",
+        "preview_checkbox": "Ota teemaominaisuus käyttöön",
+        "preview_accent_button": "Korostuspainike",
+        "preview_secondary_button": "Toissijainen toiminto",
+        "restore_defaults": "Palauta asetukset",
+        "gallery_title": "Kuvagalleria",
+        "current_folder": "Nykyinen kansio",
+        "change_folder": "Vaihda kansio...",
+        "refresh_gallery": "Päivitä galleria",
+        "send_to_batch": "Lähetä massakäsittelyyn",
+        "include_subfolders": "Sisällytä alikansiot",
+        "gallery_status": "Näytetään {shown} / {total} kuvaa. Klikkaa kuvaa kokoruudun esikatseluun tai käytä pikatoimintoja alla.",
+        "wallpaper_btn": "Taustakuva",
+        "palette_btn": "Paletti",
+        "icon_btn": "Kuvake",
+        "cursor_btn": "Osoittimeksi",
+        "no_images_found": "Tuettuja kuvia ei löytynyt.",
+        "icons_title": "Työpöydän järjestelmäkuvakkeet ja kuvakepaketit (.zip)",
+        "icons_description": "Valitse yksittäisiä .ico- ja .png-kuvia tai tuo/vie kokonaisia kuvakepaketteja (.zip).",
+        "icon_pack": "Kuvakepaketti (.zip)",
+        "import_icon_pack": "Tuo kuvakepaketti (.zip)",
+        "export_icon_pack": "Vie nykyinen kuvakepaketti (.zip)",
+        "this_pc": "Tämä tietokone",
+        "recycle_bin": "Roskakori",
+        "user_files": "Käyttäjän tiedostot",
+        "default_current": "Oletus / Nykyinen",
+        "change_icon": "Vaihda kuvake...",
+        "cursor_title": "Hiiriosoittimet, osoitinpaketit ja osoittimen luonti",
+
+        "cursor_description": "Määritä .cur- ja .ani-tiedostoja, tuo/vie osoitinpaketteja (.zip) tai luo mukautettuja osoittimia mistä tahansa kuvasta.",
+
+        "cursor_pack": "Osoitinpaketti (.zip)",
+        "import_cursor_pack": "Tuo osoitinpaketti (.zip)",
+        "export_cursor_pack": "Vie osoitinpaketti (.zip)",
+
+        "cursor_normal": "Normaali valinta (Nuoli)",
+        "cursor_link": "Linkin valinta (Käsi)",
+        "cursor_text": "Tekstin valinta (I-palkki)",
+        "cursor_working": "Työskentely taustalla",
+
+        "default_cursor": "Oletusosoitin",
+        "select_cursor": "Valitse .cur / .ani...",
+
+        "cursor_creator_title": "Luo mukautettu Windows-osoitin (.cur) kuvasta (PNG / JPG / WEBP)",
+
+        "cursor_creator_description": "Valitse kuva, määritä hotspot-piste (X,Y) sekä osoittimen koko ja muunna kuva Windows-osoittimeksi.",
+
+        "select_source_image": "Valitse lähdekuva...",
+        "no_image_selected": "Kuvaa ei ole valittu",
+
+        "target_role": "Kohderooli",
+        "cursor_size": "Koko",
+
+        "generate_cursor": "Luo .CUR ja ota käyttöön",
+        "save_cursor_as": "Tallenna .CUR nimellä...",
+        "hotspot_x": "Hotspot X",
+        "hotspot_y": "Hotspot Y",
+        "folder_title": "Kansiokuvakkeiden mukautus (desktop.ini)",
+
+        "folder_description": "Vedä ja pudota kansio sekä PNG/ICO-kuva tähän ikkunaan tai valitse ne alla olevilla painikkeilla.",
+
+        "folder_dropzone": "📁 Pudota kansio tai kuvake (.png / .ico) tähän",
+
+        "target_folder": "Kohdekansio",
+        "new_icon": "Uusi kuvake",
+
+        "not_selected": "Ei valittu",
+
+        "browse_folder": "Valitse kansio...",
+        "browse_image": "Valitse kuva...",
+
+        "set_folder_icon": "Aseta kansiokuvake",
+        "restore_folder_icon": "Palauta oletuskansiokuvake",
+        "batch_title": "Massakuvakäsittely",
+
+        "source_folder": "Lähdekansio",
+        "destination_folder": "Kohdekansio",
+
+        "browse": "Selaa...",
+
+        "include_subfolders": "Sisällytä alikansiot",
+
+        "naming_style": "Nimeämistapa",
+        "prefix_number": "Etuliite + Numero",
+        "prefix_original": "Etuliite + Alkuperäinen nimi",
+
+        "name_prefix": "Etuliite",
+
+        "output_format": "Tulostusmuoto",
+
+        "compression_quality": "Pakkauslaatu",
+
+        "resize_images": "Muuta kuvien kokoa",
+
+        "width": "Leveys",
+        "height": "Korkeus",
+
+        "center_crop": "Keskitä rajaus",
+
+        "aspect_ratio_hint": "Jätä toinen kenttä tyhjäksi säilyttääksesi kuvasuhteen.",
+
+        "auto_fix_orientation": "Korjaa puhelinkuvien suunta automaattisesti",
+
+        "strip_metadata": "Poista kaikki metatiedot (GPS, kamera jne.) tilan säästämiseksi",
+
+        "start_processing": "Aloita käsittely",
+        # Profiilit ja ajastin
+        "profiles_main_title": "Teemaprofiilit, teemapaketit (.zip) ja päivä/yö-ajastin",
+        "profiles_main_desc": "Tallenna JSON-profiileja, luo siirrettäviä teemapaketteja (.zip) tai automatisoi päivä/yö-vaihto.",
+        "enter_profile_name": "Syötä uuden profiilin nimi...",
+        "save_profile": "Tallenna profiili",
+        "import_json": "Tuo .json",
+        "export_theme_zip": "Vie teema (.zip)",
+        "import_theme_zip": "Tuo teema (.zip)",
+        "auto_day_night_title": "Automaattinen päivä/yö-teeman vaihtaja:",
+        "enable_auto_schedule": "Ota automaattinen aikataulu käyttöön",
+        "day_profile": "Päiväprofiili:",
+        "start_time": "Alkaa (HH:MM):",
+        "night_profile": "Yöprofiili:",
+        "scheduler_status_inactive": "Ajastimen tila: Ei käytössä",
+        "saved_profiles": "Tallennetut profiilit:",
+        "no_saved_profiles": "Ei tallennettuja profiileja.",
+        "apply": "Ota käyttöön",
+        "delete": "Poista",
+        "dark": "Tumma",
+        "light": "Vaalea"
+       
+        
+    },
+
+    "EN": {
+        "theme_title": "Theme Studio V.2",
+        "browse": "Browse...",
+        "ready": "Ready.",
+        "image_gallery": "Image Gallery",
+        "wallpaper": "Wallpaper",
+        "apply": "Apply",
+        "save": "Save",
+        "cancel": "Cancel",
+        "close": "Close",
+        "start_processing": "Start Processing",
+        "source_folder": "Source Folder:",
+        "destination_folder": "Destination Folder:",
+        "theme_taskbar": "Theme, Taskbar & Explorer",
+        "sidebar_theme": "Theme, Taskbar & Explorer",
+        "sidebar_gallery": "Image Gallery",
+        "sidebar_icons": "System Icons & Packs",
+        "sidebar_cursors": "Cursors & Creator",
+        "sidebar_folders": "Folder Icons",
+        "sidebar_batch": "Batch Image Processing",
+        "sidebar_profiles": "Profiles & Day/Night",
+        "theme_page_title": "Theme, Explorer & Palette",
+        "windows_dark_mode": "Windows Dark Mode",
+        "system_transparency": "System & Taskbar Transparency",
+        "taskbar_glass_title": "Taskbar Live Transparency & Glass Effect",
+        "effect_mode": "Effect Mode",
+        "opacity": "Opacity",
+        "apply_taskbar": "Apply to Taskbar",
+        "keep_effect_active": "Keep effect active",
+        "explorer_title": "File Explorer Color Theme & Layout Manager",
+        "theme_mode": "Theme Mode",
+        "compact_spacing": "Compact File Explorer Spacing",
+        "restart_explorer": "Restart Explorer.exe",
+        "wallpaper_title": "Desktop Wallpaper, Fit Style & Smart Color Palette",
+        "no_file_selected": "No file selected",
+        "browse_wallpaper": "Browse wallpaper...",
+        "fit": "Fit",
+        "palette_hint": "Select wallpaper to see colors",
+        "auto_wallpaper_color": "Automatically apply wallpaper's primary color",
+        "accent_title": "Windows Accent Color & Palette Export",
+        "apply": "Apply",
+        "pick_color": "Pick color...",
+        "colorize_taskbar": "Colorize taskbar and start menu",
+        "colorize_borders": "Colorize title bars and window borders",
+        "font_preview_title": "App Font & Live Preview",
+        "shades": "Shades",
+        "font": "Font",
+        "style": "Style",
+        "color": "Color",
+        "change_color": "Change Color",
+        "sample_text": "Sample text looks like this.",
+        "undo_last_change": "Undo Last Change",
+        "restore_point_before_changes": "Create restore point before system changes",
+        "restore_point_ready": "Restore Point: Ready",
+        "preview_window_title": "File Explorer - Live Preview",
+        "preview_title": "File Explorer",
+        "preview_subtext": "Live preview of current theme, accent color, and font settings.",
+        "preview_body": "Preview text follows current font family, style, and color settings.",
+        "preview_window_title": "File Explorer - Live Preview",
+        "preview_title": "File Explorer",
+        "preview_subtext": "Live preview of current theme, accent color, and font settings.",
+        "preview_body": "Preview text follows current font family, style, and color settings.",
+        "preview_textbox": "Preview text box...",
+        "preview_checkbox": "Enable theme feature",
+        "preview_accent_button": "Accent Button",
+        "preview_secondary_button": "Secondary Action",
+        "restore_defaults": "Restore System Defaults",
+        "gallery_title": "Image Gallery",
+        "current_folder": "Current folder",
+        "change_folder": "Change folder...",
+        "refresh_gallery": "Refresh gallery",
+        "send_to_batch": "Send Folder to Batch Processing",
+        "include_subfolders": "Include subfolders",
+        "gallery_status": "Showing {shown} of {total} images. Click image for full preview or use quick actions below.",
+        "wallpaper_btn": "Wallpaper",
+        "palette_btn": "Palette",
+        "icon_btn": "Icon",
+        "cursor_btn": "To Cursor",
+        "no_images_found": "No supported images found.",
+        "icons_title": "Desktop System Icons & Icon Packs (.zip)",
+        "icons_description": "Select individual .ico / .png files or import/export complete Icon Pack (.zip) archives.",
+        "icon_pack": "Icon Pack (.zip)",
+        "import_icon_pack": "Import Icon Pack (.zip)",
+        "export_icon_pack": "Export Current as Icon Pack (.zip)",
+        "this_pc": "This PC",
+        "recycle_bin": "Recycle Bin",
+        "user_files": "User's Files",
+        "default_current": "Default / Current",
+        "change_icon": "Change Icon...",
+        "cursor_title": "Mouse Pointers, Cursor Packs & Cursor Creator",
+
+        "cursor_description": "Assign .cur / .ani files, import/export Cursor Packs (.zip), or build custom cursors from any image.",
+
+        "cursor_pack": "Cursor Pack (.zip)",
+        "import_cursor_pack": "Import Cursor Pack (.zip)",
+        "export_cursor_pack": "Export Cursor Pack (.zip)",
+
+        "cursor_normal": "Normal Select (Arrow)",
+        "cursor_link": "Link Select (Hand)",
+        "cursor_text": "Text Select (IBeam)",
+        "cursor_working": "Working in Background (AppStarting)",
+
+        "default_cursor": "Default Cursor",
+        "select_cursor": "Select .cur / .ani...",
+
+        "cursor_creator_title": "Create Custom Windows Cursor (.cur) from Image (PNG / JPG / WEBP)",
+
+        "cursor_creator_description": "Select any image, set the click Hotspot (X,Y) coordinates and cursor size, and convert directly into a native Windows cursor.",
+
+        "select_source_image": "Select Source Image...",
+        "no_image_selected": "No image selected",
+
+        "target_role": "Target Role",
+        "cursor_size": "Size",
+
+        "generate_cursor": "Generate .CUR & Apply Immediately",
+        "save_cursor_as": "Save .CUR File As...",
+        "hotspot_x": "Hotspot X",
+        "hotspot_y": "Hotspot Y",
+        "folder_title": "Folder Customization (desktop.ini)",
+
+        "folder_description": "Drag & Drop a folder and a PNG/ICO image directly to this window or browse below.",
+
+        "folder_dropzone": "📁 Drag a folder or icon (.png / .ico) here",
+
+        "target_folder": "Target Folder",
+        "new_icon": "New Icon",
+
+        "not_selected": "Not selected",
+
+        "browse_folder": "Browse folder...",
+        "browse_image": "Browse image...",
+
+        "set_folder_icon": "Set Folder Icon",
+        "restore_folder_icon": "Restore Default Folder Icon",
+        "batch_title": "Mass Image Processing",
+
+        "source_folder": "Source Folder",
+        "destination_folder": "Destination Folder",
+
+        "browse": "Browse...",
+
+        "include_subfolders": "Include subfolders",
+
+        "naming_style": "Naming Style",
+        "prefix_number": "Prefix + Number",
+        "prefix_original": "Prefix + Original Name",
+
+        "name_prefix": "Name Prefix",
+
+        "output_format": "Output Format",
+
+        "compression_quality": "Compression Quality",
+
+        "resize_images": "Resize Images",
+
+        "width": "Width",
+        "height": "Height",
+
+        "center_crop": "Center Crop",
+
+        "aspect_ratio_hint": "Leave one field empty to maintain aspect ratio.",
+
+        "auto_fix_orientation": "Auto-fix orientation for phone images",
+
+        "strip_metadata": "Strip all metadata (GPS, Camera, etc.) to save space",
+
+        "start_processing": "Start Processing",
+        # Profiles and Scheduler
+        "profiles_main_title": "Theme Profiles, Theme Packs (.zip) & Day/Night Scheduler",
+        "profiles_main_desc": "Save JSON profiles, create portable theme packs (.zip), or automate day/night switching.",
+        "enter_profile_name": "Enter new profile name...",
+        "save_profile": "Save Profile",
+        "import_json": "Import .json",
+        "export_theme_zip": "Export Theme (.zip)",
+        "import_theme_zip": "Import Theme (.zip)",
+        "auto_day_night_title": "Automatic Day/Night Theme Switcher:",
+        "enable_auto_schedule": "Enable auto schedule",
+        "day_profile": "Day Profile:",
+        "start_time": "Start (HH:MM):",
+        "night_profile": "Night Profile:",
+        "scheduler_status_inactive": "Scheduler status: Inactive",
+        "saved_profiles": "Saved Profiles:",
+        "no_saved_profiles": "No saved profiles.",
+        "apply": "Apply",
+        "delete": "Delete",
+        "dark": "Dark",
+        "light": "Light"
+
+        
+    }
+}
+
+T = TEXTS[LANG]
 
 # --- WIN32 API CONSTANTS ---
 SPI_SETDESKWALLPAPER = 0x0014
@@ -92,7 +498,7 @@ class WindowsThemeEngine:
     """Backend engine for Windows registry, color, cursor, taskbar, and API calls."""
 
     @staticmethod
-    def refresh_shell(folder_path: str = None):
+    def refresh_shell(folder_path: str | None = None):
         if folder_path and os.path.exists(folder_path):
             ctypes.windll.shell32.SHChangeNotify(
                 SHCNE_UPDATEDIR, SHCNF_PATHW, ctypes.c_wchar_p(os.path.abspath(folder_path)), None
@@ -108,7 +514,7 @@ class WindowsThemeEngine:
         )
 
     @staticmethod
-    def set_wallpaper(image_path: str, fit_style: str = None):
+    def set_wallpaper(image_path: str, fit_style: str | None = None):
         if not os.path.exists(image_path):
             return
         if fit_style:
@@ -291,10 +697,18 @@ class WindowsThemeEngine:
         img = img.resize((64, 64), Image.Resampling.LANCZOS)
         quantized = img.quantize(colors=16)
         palette = quantized.getpalette()
+        if palette is None:
+            return []
         color_counts = quantized.getcolors()
+        if color_counts is None:
+            return []
+        from typing import cast
+
+        color_counts = cast (list[tuple[int, int]], color_counts)
 
         candidates = []
         for count, idx in color_counts:
+            
             r = palette[idx * 3]
             g = palette[idx * 3 + 1]
             b = palette[idx * 3 + 2]
@@ -531,72 +945,72 @@ class ImageManagerWidget:
     def create_widgets(self):
         self.frame.grid_columnconfigure(1, weight=1)
 
-        ctk.CTkLabel(self.frame, text="Batch Image Processing", font=ctk.CTkFont(size=22, weight="bold")).grid(
+        ctk.CTkLabel(self.frame, text=T["batch_title"], font=ctk.CTkFont(size=22, weight="bold")).grid(
             row=0, column=0, columnspan=3, padx=30, pady=(25, 15), sticky="w"
         )
 
-        ctk.CTkLabel(self.frame, text="Source Folder:").grid(row=1, column=0, sticky="w", padx=30, pady=(10, 5))
+        ctk.CTkLabel(self.frame, text=f"{T['source_folder']}:").grid(row=1, column=0, sticky="w", padx=30, pady=(10, 5))
         ctk.CTkEntry(self.frame, textvariable=self.src_folder).grid(row=1, column=1, sticky="ew", padx=(0, 10), pady=(10, 5))
-        ctk.CTkButton(self.frame, text="Browse...", command=self.browse_src, width=80).grid(row=1, column=2, padx=(0, 30), pady=(10, 5))
+        ctk.CTkButton(self.frame, text=T["browse"], command=self.browse_src, width=80).grid(row=1, column=2, padx=(0, 30), pady=(10, 5))
 
-        ctk.CTkCheckBox(self.frame, text="Include subfolders", variable=self.subfolders_var).grid(
+        ctk.CTkCheckBox(self.frame, text=T["include_subfolders"], variable=self.subfolders_var).grid(
             row=2, column=1, columnspan=2, sticky="w", pady=(0, 10)
         )
 
-        ctk.CTkLabel(self.frame, text="Destination Folder:").grid(row=3, column=0, sticky="w", padx=30, pady=10)
+        ctk.CTkLabel(self.frame, text=f"{T['destination_folder']}:").grid(row=3, column=0, sticky="w", padx=30, pady=10)
         ctk.CTkEntry(self.frame, textvariable=self.dest_folder).grid(row=3, column=1, sticky="ew", padx=(0, 10))
-        ctk.CTkButton(self.frame, text="Browse...", command=self.browse_dest, width=80).grid(row=3, column=2, padx=(0, 30))
+        ctk.CTkButton(self.frame, text=T["browse"], command=self.browse_dest, width=80).grid(row=3, column=2, padx=(0, 30))
 
-        ctk.CTkLabel(self.frame, text="Naming Style:").grid(row=4, column=0, sticky="w", padx=30, pady=10)
+        ctk.CTkLabel(self.frame, text=f"{T['naming_style']}:").grid(row=4, column=0, sticky="w", padx=30, pady=10)
         style_frame = ctk.CTkFrame(self.frame, fg_color="transparent")
         style_frame.grid(row=4, column=1, columnspan=2, sticky="w")
-        ctk.CTkRadioButton(style_frame, text="Prefix + Number", variable=self.naming_style, value="number").pack(side="left", padx=(0, 15))
-        ctk.CTkRadioButton(style_frame, text="Prefix + Original Name", variable=self.naming_style, value="original").pack(side="left")
+        ctk.CTkRadioButton(style_frame, text=T["prefix_number"], variable=self.naming_style, value="number").pack(side="left", padx=(0, 15))
+        ctk.CTkRadioButton(style_frame, text=T["prefix_original"], variable=self.naming_style, value="original").pack(side="left")
 
-        ctk.CTkLabel(self.frame, text="Name Prefix:").grid(row=5, column=0, sticky="w", padx=30, pady=10)
+        ctk.CTkLabel(self.frame, text=f"{T['name_prefix']}:").grid(row=5, column=0, sticky="w", padx=30, pady=10)
         ctk.CTkEntry(self.frame, textvariable=self.prefix).grid(row=5, column=1, sticky="ew", padx=(0, 10))
 
-        ctk.CTkLabel(self.frame, text="Output Format:").grid(row=6, column=0, sticky="w", padx=30, pady=10)
+        ctk.CTkLabel(self.frame, text=f"{T['output_format']}:").grid(row=6, column=0, sticky="w", padx=30, pady=10)
         formats = ["PNG", "JPEG", "WEBP", "BMP", "ICO", "CUR (Cursor)"]
         self.format_dropdown = ctk.CTkComboBox(self.frame, variable=self.output_format, values=formats, command=self.on_format_change)
         self.format_dropdown.grid(row=6, column=1, sticky="w", padx=(0, 10))
 
-        self.quality_label = ctk.CTkLabel(self.frame, text=f"Compression Quality ({self.quality_var.get()}%):", text_color="gray")
+        self.quality_label = ctk.CTkLabel(self.frame, text=f"{T['compression_quality']} ({self.quality_var.get()}%):", text_color="gray")
         self.quality_label.grid(row=7, column=0, sticky="w", padx=30, pady=10)
 
         self.quality_slider = ctk.CTkSlider(self.frame, from_=1, to=100, variable=self.quality_var, command=self.update_quality_label, state="disabled")
         self.quality_slider.grid(row=7, column=1, sticky="we", padx=(0, 10))
 
-        ctk.CTkCheckBox(self.frame, text="Resize Images", variable=self.resize_var, command=self.toggle_resize).grid(
+        ctk.CTkCheckBox(self.frame, text=T["resize_images"], variable=self.resize_var, command=self.toggle_resize).grid(
             row=8, column=0, columnspan=2, sticky="w", padx=30, pady=(15, 5)
         )
 
         dim_frame = ctk.CTkFrame(self.frame, fg_color="transparent")
         dim_frame.grid(row=9, column=0, columnspan=3, sticky="w", padx=30)
-        ctk.CTkLabel(dim_frame, text="Width:").pack(side="left")
+        ctk.CTkLabel(dim_frame, text=f"{T['width']}:").pack(side="left")
         self.width_entry = ctk.CTkEntry(dim_frame, textvariable=self.width_var, width=80, state="disabled")
         self.width_entry.pack(side="left", padx=(10, 20))
 
-        ctk.CTkLabel(dim_frame, text="Height:").pack(side="left")
+        ctk.CTkLabel(dim_frame, text=f"{T['height']}:").pack(side="left")
         self.height_entry = ctk.CTkEntry(dim_frame, textvariable=self.height_var, width=80, state="disabled")
         self.height_entry.pack(side="left", padx=(10, 10))
 
-        self.crop_checkbox = ctk.CTkCheckBox(self.frame, text="Center Crop", variable=self.crop_var, state="disabled")
+        self.crop_checkbox = ctk.CTkCheckBox(self.frame, text=T["center_crop"], variable=self.crop_var, state="disabled")
         self.crop_checkbox.grid(row=10, column=0, columnspan=3, sticky="w", padx=30, pady=(5, 5))
 
         info_text = "(Leave one empty to maintain aspect ratio. ICO/CUR formats auto-build valid Windows icons/cursors.)"
-        ctk.CTkLabel(self.frame, text=info_text, text_color="gray", font=ctk.CTkFont(size=11)).grid(
+        ctk.CTkLabel(self.frame, text=T["aspect_ratio_hint"], text_color="gray", font=ctk.CTkFont(size=11)).grid(
             row=11, column=0, columnspan=3, sticky="w", padx=30, pady=(0, 10)
         )
 
-        self.exif_checkbox = ctk.CTkCheckBox(self.frame, text="Auto-fix orientation for phone images", variable=self.exif_fix_var)
+        self.exif_checkbox = ctk.CTkCheckBox(self.frame, text=T["auto_fix_orientation"], variable=self.exif_fix_var)
         self.exif_checkbox.grid(row=12, column=0, columnspan=3, sticky="w", padx=30, pady=(10, 5))
 
-        self.meta_checkbox = ctk.CTkCheckBox(self.frame, text="Strip all metadata (GPS, Camera, etc.) - Saves space", variable=self.strip_meta_var)
+        self.meta_checkbox = ctk.CTkCheckBox(self.frame, text=T["strip_metadata"], variable=self.strip_meta_var)
         self.meta_checkbox.grid(row=13, column=0, columnspan=3, sticky="w", padx=30, pady=(5, 10))
 
         self.start_button = ctk.CTkButton(
-            self.frame, text="Start Processing", font=ctk.CTkFont(size=14, weight="bold"),
+            self.frame, text=T["start_processing"], font=ctk.CTkFont(size=14, weight="bold"),
             fg_color="#2FA572", hover_color="#106A43", command=self.start_processing_thread
         )
         self.start_button.grid(row=14, column=0, columnspan=3, pady=(15, 10), ipadx=20, ipady=5)
@@ -606,7 +1020,7 @@ class ImageManagerWidget:
         self.progress_bar.set(0)
         self.progress_bar.grid_remove()
 
-        self.status_label = ctk.CTkLabel(self.frame, text="Ready.", text_color="gray")
+        self.status_label = ctk.CTkLabel(self.frame, text=T["ready"], text_color="gray")
         self.status_label.grid(row=16, column=0, columnspan=3, pady=(0, 20))
 
         self.on_format_change(self.output_format.get())
@@ -637,7 +1051,7 @@ class ImageManagerWidget:
             self.quality_label.configure(text_color="gray")
 
     def update_quality_label(self, value):
-        self.quality_label.configure(text=f"Compression Quality ({int(value)}%):")
+        self.quality_label.configure(text=f"{T['compression_quality']} ({int(value)}%):")
 
     def update_ui(self, progress_val, status_text, status_color="gray"):
         self.progress_bar.set(progress_val)
@@ -827,7 +1241,7 @@ class ThemeApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("Theme Studio V.2")
+        self.title(T["theme_title"])
         self.geometry("1160x800")
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
@@ -898,13 +1312,41 @@ class ThemeApp(ctk.CTk):
         title = ctk.CTkLabel(self.sidebar, text="🎨 Theme Studio V.2", font=ctk.CTkFont(size=20, weight="bold"))
         title.pack(padx=20, pady=(25, 20))
 
-        ctk.CTkButton(self.sidebar, text="🎨 Theme, Taskbar & Explorer", command=lambda: self.show_view("theme")).pack(padx=20, pady=6, fill="x")
-        ctk.CTkButton(self.sidebar, text="🖼️ Image Gallery", command=lambda: self.show_view("gallery")).pack(padx=20, pady=6, fill="x")
-        ctk.CTkButton(self.sidebar, text="💻 System Icons & Packs", command=lambda: self.show_view("icons")).pack(padx=20, pady=6, fill="x")
-        ctk.CTkButton(self.sidebar, text="🖱️ Cursors & Creator", command=lambda: self.show_view("cursors")).pack(padx=20, pady=6, fill="x")
-        ctk.CTkButton(self.sidebar, text="📁 Folder Icons", command=lambda: self.show_view("folders")).pack(padx=20, pady=6, fill="x")
-        ctk.CTkButton(self.sidebar, text="⚙️ Batch Image Processing", command=lambda: self.show_view("img_mgr")).pack(padx=20, pady=6, fill="x")
-        ctk.CTkButton(self.sidebar, text="💾 Profiles & Day/Night", command=lambda: self.show_view("profiles")).pack(padx=20, pady=6, fill="x")
+        ctk.CTkButton(
+            self.sidebar, 
+            text=f"🎨 {T['theme_taskbar']}",
+            command=lambda: self.show_view("theme")
+            ).pack(padx=20, pady=6, fill="x")
+        ctk.CTkButton(
+            self.sidebar, 
+            text=f"🖼️ {T['sidebar_gallery']}",
+            command=lambda: self.show_view("gallery")
+            ).pack(padx=20, pady=6, fill="x")
+        ctk.CTkButton(
+            self.sidebar, 
+            text=f"💻 {T['sidebar_icons']}", 
+            command=lambda: self.show_view("icons")
+            ).pack(padx=20, pady=6, fill="x")
+        ctk.CTkButton(
+            self.sidebar, 
+            text=f"🖱️ {T['sidebar_cursors']}", 
+            command=lambda: self.show_view("cursors")
+            ).pack(padx=20, pady=6, fill="x")
+        ctk.CTkButton(
+            self.sidebar, 
+            text=f"📁 {T['sidebar_folders']}", 
+            command=lambda: self.show_view("folders")
+            ).pack(padx=20, pady=6, fill="x")
+        ctk.CTkButton(
+            self.sidebar, 
+            text=f"⚙️ {T['sidebar_batch']}", 
+            command=lambda: self.show_view("img_mgr")
+            ).pack(padx=20, pady=6, fill="x")
+        ctk.CTkButton(
+            self.sidebar, 
+            text=f"💾 {T['sidebar_profiles']}", 
+            command=lambda: self.show_view("profiles")
+        ).pack(padx=20, pady=6, fill="x")
 
         author_label = ctk.CTkLabel(
             self.sidebar,
@@ -915,7 +1357,7 @@ class ThemeApp(ctk.CTk):
         author_label.pack(side="bottom", pady=(0, 10))
 
         btn_reset = ctk.CTkButton(
-            self.sidebar, text="Restore System Defaults", fg_color="#8B0000", hover_color="#5A0000",
+            self.sidebar, text=T["restore_defaults"], fg_color="#8B0000", hover_color="#5A0000",
             command=self.reset_defaults
         )
         btn_reset.pack(side="bottom", padx=20, pady=(0, 15), fill="x")
@@ -925,16 +1367,16 @@ class ThemeApp(ctk.CTk):
         # 1. THEME, TASKBAR, EXPLORER & COLORS
         # =========================================================
         self.view_theme = ctk.CTkScrollableFrame(self, corner_radius=12)
-        ctk.CTkLabel(self.view_theme, text="Theme, Taskbar Transparency, Explorer & Palette", font=ctk.CTkFont(size=22, weight="bold")).pack(anchor="w", padx=30, pady=(20, 10))
+        ctk.CTkLabel(self.view_theme,  text=T["theme_page_title"], font=ctk.CTkFont(size=22, weight="bold")).pack(anchor="w", padx=30, pady=(20, 10))
 
         top_switches = ctk.CTkFrame(self.view_theme, fg_color="transparent")
         top_switches.pack(fill="x", padx=30, pady=4)
 
-        self.dark_switch = ctk.CTkSwitch(top_switches, text="Windows Dark Mode", command=self.toggle_dark_mode, font=ctk.CTkFont(size=14))
+        self.dark_switch = ctk.CTkSwitch(top_switches, text=T["windows_dark_mode"], command=self.toggle_dark_mode, font=ctk.CTkFont(size=14))
         self.dark_switch.select()
         self.dark_switch.pack(side="left", padx=(0, 25))
 
-        self.trans_switch = ctk.CTkSwitch(top_switches, text="System & Taskbar Transparency", command=self.toggle_system_transparency, font=ctk.CTkFont(size=14))
+        self.trans_switch = ctk.CTkSwitch(top_switches, text=T["system_transparency"], command=self.toggle_system_transparency, font=ctk.CTkFont(size=14))
         self.trans_switch.select()
         self.trans_switch.pack(side="left")
 
@@ -942,11 +1384,14 @@ class ThemeApp(ctk.CTk):
         tb_frame = ctk.CTkFrame(self.view_theme)
         tb_frame.pack(fill="x", padx=30, pady=8)
 
-        ctk.CTkLabel(tb_frame, text="🪟 Taskbar Live Transparency & Glass Effect (Win32 DWM):", font=ctk.CTkFont(size=15, weight="bold")).pack(anchor="w", padx=15, pady=(10, 4))
+        ctk.CTkLabel(tb_frame, text=f"🪟 {T['taskbar_glass_title']}", font=ctk.CTkFont(size=15, weight="bold")).pack(anchor="w", padx=15, pady=(10, 4))
         tb_row = ctk.CTkFrame(tb_frame, fg_color="transparent")
         tb_row.pack(fill="x", padx=15, pady=(2, 10))
 
-        ctk.CTkLabel(tb_row, text="Effect Mode:").pack(side="left", padx=(0, 8))
+        ctk.CTkLabel(
+            tb_row, 
+            text=f"{T['effect_mode']}:"
+        ) .pack(side="left", padx=(0, 8))
         self.tb_effect_var = ctk.StringVar(value="Default")
         self.tb_effect_dropdown = ctk.CTkComboBox(
             tb_row, variable=self.tb_effect_var,
@@ -955,23 +1400,23 @@ class ThemeApp(ctk.CTk):
         )
         self.tb_effect_dropdown.pack(side="left", padx=(0, 15))
 
-        ctk.CTkLabel(tb_row, text="Opacity:").pack(side="left", padx=(0, 8))
+        ctk.CTkLabel(tb_row, text=f"{T['opacity']}:").pack(side="left", padx=(0, 8))
         self.tb_alpha_slider = ctk.CTkSlider(tb_row, from_=0, to=255, width=130, command=self.on_tb_alpha_change)
         self.tb_alpha_slider.set(120)
         self.tb_alpha_slider.pack(side="left", padx=(0, 12))
 
-        ctk.CTkButton(tb_row, text="Apply to Taskbar", width=125, command=self.apply_taskbar_effect_ui).pack(side="left", padx=(0, 12))
-        ctk.CTkCheckBox(tb_row, text="Keep effect active in background", variable=self.taskbar_keepalive_var).pack(side="left")
+        ctk.CTkButton(tb_row, text=f"{T['apply_taskbar']}", width=125, command=self.apply_taskbar_effect_ui).pack(side="left", padx=(0, 12))
+        ctk.CTkCheckBox(tb_row, text=T["keep_effect_active"], variable=self.taskbar_keepalive_var).pack(side="left")
 
         # --- FILE EXPLORER THEME MANAGER ---
         exp_frame = ctk.CTkFrame(self.view_theme)
         exp_frame.pack(fill="x", padx=30, pady=8)
 
-        ctk.CTkLabel(exp_frame, text="📁 File Explorer Color Theme & Layout Manager:", font=ctk.CTkFont(size=15, weight="bold")).pack(anchor="w", padx=15, pady=(10, 4))
+        ctk.CTkLabel(exp_frame, text=f"📂 {T['explorer_title']}:", font=ctk.CTkFont(size=15, weight="bold")).pack(anchor="w", padx=15, pady=(10, 4))
         exp_row = ctk.CTkFrame(exp_frame, fg_color="transparent")
         exp_row.pack(fill="x", padx=15, pady=(2, 10))
 
-        ctk.CTkLabel(exp_row, text="Theme Mode:").pack(side="left", padx=(0, 8))
+        ctk.CTkLabel(exp_row, text=f"{T['theme_mode']}:").pack(side="left", padx=(0, 8))
         self.exp_mode_var = ctk.StringVar(value="Dark")
         ctk.CTkComboBox(
             exp_row, variable=self.exp_mode_var,
@@ -981,12 +1426,12 @@ class ThemeApp(ctk.CTk):
 
         self.exp_compact_var = tk.BooleanVar(value=False)
         ctk.CTkCheckBox(
-            exp_row, text="Compact File Explorer Spacing", variable=self.exp_compact_var,
+            exp_row, text=T["compact_spacing"], variable=self.exp_compact_var,
             command=self.apply_explorer_theme_ui
         ).pack(side="left", padx=(0, 15))
 
         ctk.CTkButton(
-            exp_row, text="🔄 Restart Explorer.exe", width=155, fg_color="#444444", hover_color="#333333",
+            exp_row, text=f"🔄 {T['restart_explorer']}", width=155, fg_color="#444444", hover_color="#333333",
             command=WindowsThemeEngine.restart_explorer
         ).pack(side="right")
 
@@ -994,15 +1439,15 @@ class ThemeApp(ctk.CTk):
         wp_frame = ctk.CTkFrame(self.view_theme)
         wp_frame.pack(fill="x", padx=30, pady=8)
 
-        ctk.CTkLabel(wp_frame, text="Desktop Wallpaper, Fit Style & Smart Color Palette:", font=ctk.CTkFont(size=15, weight="bold")).pack(anchor="w", padx=15, pady=(10, 2))
-        self.wp_label = ctk.CTkLabel(wp_frame, text="No file selected", text_color="gray")
+        ctk.CTkLabel(wp_frame, text=T["wallpaper_title"], font=ctk.CTkFont(size=15, weight="bold")).pack(anchor="w", padx=15, pady=(10, 2))
+        self.wp_label = ctk.CTkLabel(wp_frame, text=T["no_file_selected"], text_color="gray")
         self.wp_label.pack(anchor="w", padx=15, pady=(0, 6))
 
         wp_btn_row = ctk.CTkFrame(wp_frame, fg_color="transparent")
         wp_btn_row.pack(fill="x", padx=15, pady=(0, 8))
-        ctk.CTkButton(wp_btn_row, text="Browse wallpaper...", command=self.pick_wallpaper).pack(side="left", padx=(0, 10))
+        ctk.CTkButton(wp_btn_row, text=T["browse_wallpaper"], command=self.pick_wallpaper).pack(side="left", padx=(0, 10))
 
-        ctk.CTkLabel(wp_btn_row, text="Fit:").pack(side="left", padx=(5, 5))
+        ctk.CTkLabel(wp_btn_row, text=T["fit"] ).pack(side="left", padx=(5, 5))
         self.wp_fit_var = ctk.StringVar(value="Fill")
         ctk.CTkComboBox(
             wp_btn_row, variable=self.wp_fit_var,
@@ -1014,7 +1459,7 @@ class ThemeApp(ctk.CTk):
         self.palette_container.pack(side="left", padx=5)
         self._build_empty_palette_preview()
 
-        self.chk_auto_wp_color = ctk.CTkCheckBox(wp_frame, text="Automatically apply wallpaper's primary color")
+        self.chk_auto_wp_color = ctk.CTkCheckBox(wp_frame, text=T["auto_wallpaper_color"],)
         self.chk_auto_wp_color.select()
         self.chk_auto_wp_color.pack(anchor="w", padx=15, pady=(0, 10))
 
@@ -1022,7 +1467,7 @@ class ThemeApp(ctk.CTk):
         color_frame = ctk.CTkFrame(self.view_theme)
         color_frame.pack(fill="x", padx=30, pady=8)
 
-        ctk.CTkLabel(color_frame, text="Windows Accent Color & Palette Export:", font=ctk.CTkFont(size=15, weight="bold")).pack(anchor="w", padx=15, pady=(10, 6))
+        ctk.CTkLabel(color_frame, text=f"🎨 {T['accent_title']}", font=ctk.CTkFont(size=15, weight="bold")).pack(anchor="w", padx=15, pady=(10, 6))
         picker_row = ctk.CTkFrame(color_frame, fg_color="transparent")
         picker_row.pack(fill="x", padx=15, pady=4)
 
@@ -1036,8 +1481,8 @@ class ThemeApp(ctk.CTk):
         self.hex_entry.insert(0, "#0078D4")
         self.hex_entry.bind("<Return>", lambda event: self.apply_hex_color())
 
-        ctk.CTkButton(picker_row, text="Apply", width=65, command=self.apply_hex_color).pack(side="left", padx=(0, 8))
-        ctk.CTkButton(picker_row, text="🎨 Pick color...", width=125, command=self.open_color_picker).pack(side="left", padx=(0, 10))
+        ctk.CTkButton(picker_row, text=T["apply"], width=65, command=self.apply_hex_color).pack(side="left", padx=(0, 8))
+        ctk.CTkButton(picker_row, text=f"🎨 {T['pick_color']}", width=125, command=self.open_color_picker).pack(side="left", padx=(0, 10))
 
         for hex_val in ["#0078D4", "#00E5FF", "#8E24AA", "#00C853", "#FFAB00"]:
             ctk.CTkButton(
@@ -1053,10 +1498,10 @@ class ThemeApp(ctk.CTk):
 
         opts_row = ctk.CTkFrame(color_frame, fg_color="transparent")
         opts_row.pack(fill="x", padx=15, pady=(8, 12))
-        self.chk_taskbar = ctk.CTkCheckBox(opts_row, text="Colorize taskbar and start menu", command=self.refresh_accent_options)
+        self.chk_taskbar = ctk.CTkCheckBox(opts_row, text=T["colorize_taskbar"], command=self.refresh_accent_options)
         self.chk_taskbar.select()
         self.chk_taskbar.pack(side="left", padx=(0, 25))
-        self.chk_borders = ctk.CTkCheckBox(opts_row, text="Colorize title bars and window borders", command=self.refresh_accent_options)
+        self.chk_borders = ctk.CTkCheckBox(opts_row, text=T["colorize_borders"], command=self.refresh_accent_options)
         self.chk_borders.select()
         self.chk_borders.pack(side="left")
 
@@ -1064,18 +1509,18 @@ class ThemeApp(ctk.CTk):
         font_frame = ctk.CTkFrame(self.view_theme)
         font_frame.pack(fill="x", padx=30, pady=8)
 
-        ctk.CTkLabel(font_frame, text="App Font & Live Preview:", font=ctk.CTkFont(size=15, weight="bold")).pack(anchor="w", padx=15, pady=(10, 6))
+        ctk.CTkLabel(font_frame, text=T["font_preview_title"], font=ctk.CTkFont(size=15, weight="bold")).pack(anchor="w", padx=15, pady=(10, 6))
         font_row = ctk.CTkFrame(font_frame, fg_color="transparent")
         font_row.pack(fill="x", padx=15, pady=4)
 
-        ctk.CTkLabel(font_row, text="Font:").pack(side="left", padx=(0, 10))
+        ctk.CTkLabel(font_row, text=f"{T['font']}:").pack(side="left", padx=(0, 10))
         available_fonts = list(tkfont.families())
         safe_fonts = [f for f in available_fonts if not f.startswith('@')]
         self.font_var = ctk.StringVar(value="Segoe UI")
         self.font_dropdown = ctk.CTkComboBox(font_row, variable=self.font_var, values=sorted(safe_fonts), command=self.apply_font)
         self.font_dropdown.pack(side="left", padx=(0, 20))
 
-        ctk.CTkLabel(font_row, text="Style:").pack(side="left", padx=(0, 10))
+        ctk.CTkLabel(font_row, text=f"{T['style']}:").pack(side="left", padx=(0, 10))
         self.font_style_var = ctk.StringVar(value="Regular")
         self.font_style_dropdown = ctk.CTkComboBox(
             font_row, variable=self.font_style_var,
@@ -1084,27 +1529,35 @@ class ThemeApp(ctk.CTk):
         )
         self.font_style_dropdown.pack(side="left", padx=(0, 20))
 
-        ctk.CTkLabel(font_row, text="Color:").pack(side="left", padx=(0, 10))
+        ctk.CTkLabel(font_row, text=f"{T['color']}:").pack(side="left", padx=(0, 10))
+        
         self.font_color_swatch = ctk.CTkFrame(font_row, width=24, height=24, corner_radius=12, fg_color="#FFFFFF", border_width=1, border_color="gray")
         self.font_color_swatch.pack(side="left", padx=(0, 5))
-        ctk.CTkButton(font_row, text="Change Color", width=100, command=self.open_font_color_picker).pack(side="left")
+        
+        # UUSI: Tekstikenttä fontin HEX-koodille
+        self.font_hex_entry = ctk.CTkEntry(font_row, width=80)
+        self.font_hex_entry.pack(side="left", padx=(5, 10))
+        self.font_hex_entry.insert(0, "#FFFFFF")
+        self.font_hex_entry.bind("<Return>", lambda event: self.apply_font_hex_color())
+        
+        ctk.CTkButton(font_row, text=T["change_color"], width=100, command=self.open_font_color_picker).pack(side="left")
 
-        self.lbl_demo_text = ctk.CTkLabel(font_frame, text="Sample text looks like this.", font=ctk.CTkFont(family="Segoe UI", size=14), text_color="#FFFFFF")
+        self.lbl_demo_text = ctk.CTkLabel(font_frame, text=T["sample_text"], font=ctk.CTkFont(family="Segoe UI", size=14), text_color="#FFFFFF")
         self.lbl_demo_text.pack(anchor="w", padx=15, pady=(8, 8))
 
         undo_restore_row = ctk.CTkFrame(font_frame, fg_color="transparent")
         undo_restore_row.pack(fill="x", padx=15, pady=(0, 10))
 
-        ctk.CTkButton(undo_restore_row, text="↶ Undo Last Change", width=150, command=self.undo_last_change).pack(side="left", padx=(0, 20))
+        ctk.CTkButton(undo_restore_row, text=f"↶ {T['undo_last_change']}", width=150, command=self.undo_last_change).pack(side="left", padx=(0, 20))
 
         self.create_restore_point_var = ctk.BooleanVar(value=True)
         self.restore_checkbox = ctk.CTkCheckBox(
-            undo_restore_row, text="Create restore point before system changes",
+            undo_restore_row, text=T["restore_point_before_changes"],
             variable=self.create_restore_point_var, command=self.toggle_restore_points
         )
         self.restore_checkbox.pack(side="left", padx=(0, 15))
 
-        self.restore_status = ctk.CTkLabel(undo_restore_row, text="Restore Point: Ready", text_color="gray")
+        self.restore_status = ctk.CTkLabel(undo_restore_row, text=T["restore_point_ready"], text_color="gray")
         self.restore_status.pack(side="left")
 
         # Live Preview Card
@@ -1114,60 +1567,60 @@ class ThemeApp(ctk.CTk):
         self.preview_titlebar = ctk.CTkFrame(self.preview_frame, height=32, fg_color=self.current_state["accent_color"], corner_radius=6)
         self.preview_titlebar.pack(fill="x", padx=4, pady=(4, 10))
 
-        self.preview_window_text = ctk.CTkLabel(self.preview_titlebar, text="File Explorer - Live Preview", text_color="white", font=ctk.CTkFont(weight="bold"))
+        self.preview_window_text = ctk.CTkLabel(self.preview_titlebar, text=T["preview_window_title"], text_color="white", font=ctk.CTkFont(weight="bold"))
         self.preview_window_text.pack(side="left", padx=12, pady=4)
 
         self.preview_window_buttons = ctk.CTkLabel(self.preview_titlebar, text="─   □   ✕", text_color="white")
         self.preview_window_buttons.pack(side="right", padx=12, pady=4)
 
-        self.preview_title = ctk.CTkLabel(self.preview_frame, text="File Explorer", font=ctk.CTkFont(size=18, weight="bold"))
+        self.preview_title = ctk.CTkLabel(self.preview_frame, text=T["preview_title"], font=ctk.CTkFont(size=18, weight="bold"))
         self.preview_title.pack(anchor="w", padx=15, pady=(4, 2))
 
-        self.preview_subtext = ctk.CTkLabel(self.preview_frame, text="Live preview of current theme, accent color, and font settings.", text_color="gray")
+        self.preview_subtext = ctk.CTkLabel(self.preview_frame, text=T["preview_subtext"], text_color="gray")
         self.preview_subtext.pack(anchor="w", padx=15, pady=(0, 6))
 
-        self.preview_body = ctk.CTkLabel(self.preview_frame, text="Preview text follows current font family, style, and color settings.")
+        self.preview_body = ctk.CTkLabel(self.preview_frame, text=T["preview_body"])
         self.preview_body.pack(anchor="w", padx=15, pady=(0, 8))
 
         self.preview_accent = ctk.CTkFrame(self.preview_frame, height=8, fg_color=self.current_state["accent_color"], corner_radius=4)
         self.preview_accent.pack(fill="x", padx=15, pady=(0, 10))
 
-        self.preview_entry = ctk.CTkEntry(self.preview_frame, placeholder_text="Preview text box...")
+        self.preview_entry = ctk.CTkEntry(self.preview_frame, placeholder_text=T["preview_textbox"])
         self.preview_entry.pack(fill="x", padx=15, pady=(0, 10))
 
         preview_actions = ctk.CTkFrame(self.preview_frame, fg_color="transparent")
         preview_actions.pack(fill="x", padx=15, pady=(0, 12))
 
-        self.preview_checkbox = ctk.CTkCheckBox(preview_actions, text="Enable theme feature")
+        self.preview_checkbox = ctk.CTkCheckBox(preview_actions, text=T["preview_checkbox"])
         self.preview_checkbox.select()
         self.preview_checkbox.pack(side="left", padx=(0, 20))
 
-        self.preview_button = ctk.CTkButton(preview_actions, text="Accent Button", width=130, fg_color=self.current_state["accent_color"])
+        self.preview_button = ctk.CTkButton(preview_actions, text=T["preview_accent_button"], width=130, fg_color=self.current_state["accent_color"])
         self.preview_button.pack(side="left", padx=(0, 10))
 
-        self.preview_secondary_button = ctk.CTkButton(preview_actions, text="Secondary Action", width=130, fg_color="gray35")
+        self.preview_secondary_button = ctk.CTkButton(preview_actions, text=T["preview_secondary_button"], width=130, fg_color="gray35")
         self.preview_secondary_button.pack(side="left")
 
         # =========================================================
         # 2. IMAGE GALLERY
         # =========================================================
         self.view_gallery = ctk.CTkScrollableFrame(self, corner_radius=12)
-        ctk.CTkLabel(self.view_gallery, text="Image Gallery", font=ctk.CTkFont(size=22, weight="bold")).pack(anchor="w", padx=30, pady=(25, 5))
+        ctk.CTkLabel(self.view_gallery, text=T["gallery_title"], font=ctk.CTkFont(size=22, weight="bold")).pack(anchor="w", padx=30, pady=(25, 5))
 
-        self.lbl_gallery_dir = ctk.CTkLabel(self.view_gallery, text=f"Current folder: {GALLERY_DIR}", text_color="gray")
+        self.lbl_gallery_dir = ctk.CTkLabel(self.view_gallery, text=f"{T['current_folder']}: {GALLERY_DIR}", text_color="gray")
         self.lbl_gallery_dir.pack(anchor="w", padx=30, pady=(0, 12))
 
         gal_controls = ctk.CTkFrame(self.view_gallery, fg_color="transparent")
         gal_controls.pack(fill="x", padx=30, pady=(0, 10))
 
-        ctk.CTkButton(gal_controls, text="📂 Change folder...", command=self.change_gallery_dir).pack(side="left", padx=(0, 10))
-        ctk.CTkButton(gal_controls, text="🔄 Refresh gallery", command=self.load_gallery_images).pack(side="left", padx=(0, 10))
+        ctk.CTkButton(gal_controls, text=f"📁 {T['change_folder']}", command=self.change_gallery_dir).pack(side="left", padx=(0, 10))
+        ctk.CTkButton(gal_controls, text=f"🔄 {T['refresh_gallery']}", command=self.load_gallery_images).pack(side="left", padx=(0, 10))
         ctk.CTkButton(
-            gal_controls, text="⚙️ Send Folder to Batch Processing", fg_color="#2FA572", hover_color="#106A43",
+            gal_controls, text=f"⚙️ {T['send_to_batch']}", fg_color="#2FA572", hover_color="#106A43",
             command=self.send_gallery_to_batch
         ).pack(side="left", padx=(0, 15))
         ctk.CTkCheckBox(
-            gal_controls, text="Include subfolders", variable=self.gallery_subfolders_var, command=self.load_gallery_images
+            gal_controls, text=T["include_subfolders"], variable=self.gallery_subfolders_var, command=self.load_gallery_images
         ).pack(side="left")
 
         self.gallery_status_lbl = ctk.CTkLabel(self.view_gallery, text="", text_color="gray")
@@ -1182,49 +1635,51 @@ class ThemeApp(ctk.CTk):
         # 3. SYSTEM ICONS & ICON PACK (.ZIP)
         # =========================================================
         self.view_icons = ctk.CTkFrame(self, corner_radius=12)
-        ctk.CTkLabel(self.view_icons, text="Desktop System Icons & Icon Packs (.zip)", font=ctk.CTkFont(size=22, weight="bold")).pack(anchor="w", padx=30, pady=(25, 5))
-        ctk.CTkLabel(self.view_icons, text="Select individual .ico / .png files or import/export complete Icon Pack (.zip) archives.", text_color="gray").pack(anchor="w", padx=30, pady=(0, 15))
+        ctk.CTkLabel(self.view_icons, text=T["icons_title"], font=ctk.CTkFont(size=22, weight="bold")).pack(anchor="w", padx=30, pady=(25, 5))
+        ctk.CTkLabel(self.view_icons, text=T["icons_description"], text_color="gray").pack(anchor="w", padx=30, pady=(0, 15))
 
         icon_pack_bar = ctk.CTkFrame(self.view_icons)
         icon_pack_bar.pack(fill="x", padx=30, pady=(0, 15))
-        ctk.CTkLabel(icon_pack_bar, text="📦 Icon Pack (.zip):", font=ctk.CTkFont(size=14, weight="bold")).pack(side="left", padx=15, pady=12)
-        ctk.CTkButton(icon_pack_bar, text="📥 Import Icon Pack (.zip)", fg_color="#2FA572", hover_color="#106A43", command=self.import_icon_pack_zip).pack(side="left", padx=8, pady=12)
-        ctk.CTkButton(icon_pack_bar, text="📤 Export Current as Icon Pack (.zip)", command=self.export_icon_pack_zip).pack(side="left", padx=8, pady=12)
+        ctk.CTkLabel(icon_pack_bar, text=f"📦 {T['icon_pack']}:", font=ctk.CTkFont(size=14, weight="bold")).pack(side="left", padx=15, pady=12)
+        ctk.CTkButton(icon_pack_bar, text=f"📤 {T['import_icon_pack']}", fg_color="#2FA572", hover_color="#106A43", command=self.import_icon_pack_zip).pack(side="left", padx=8, pady=12)
+        ctk.CTkButton(icon_pack_bar, text=f"💾 {T['export_icon_pack']}", command=self.export_icon_pack_zip).pack(side="left", padx=8, pady=12)
 
-        self._create_icon_row(self.view_icons, "💻 This PC", CLSID_THIS_PC, "this_pc", False)
-        self._create_icon_row(self.view_icons, "🗑️ Recycle Bin", CLSID_RECYCLE_BIN, "recycle_bin", True)
-        self._create_icon_row(self.view_icons, "📁 User's Files", CLSID_USER_FILES, "user_files", False)
+        self._create_icon_row(self.view_icons, f"💻 {T['this_pc']}", CLSID_THIS_PC, "this_pc", False)
+
+        self._create_icon_row(self.view_icons, f"🗑️ {T['recycle_bin']}", CLSID_RECYCLE_BIN, "recycle_bin", True)
+
+        self._create_icon_row(self.view_icons, f"📁 {T['user_files']}", CLSID_USER_FILES, "user_files", False)
 
         # =========================================================
         # 4. MOUSE POINTERS, CURSOR PACK (.ZIP) & IMAGE-TO-CURSOR CREATOR
         # =========================================================
         self.view_cursors = ctk.CTkScrollableFrame(self, corner_radius=12)
-        ctk.CTkLabel(self.view_cursors, text="Mouse Pointers, Cursor Packs & Cursor Creator", font=ctk.CTkFont(size=22, weight="bold")).pack(anchor="w", padx=30, pady=(20, 5))
-        ctk.CTkLabel(self.view_cursors, text="Assign .cur / .ani files, import/export Cursor Packs (.zip), or build custom cursors from any image.", text_color="gray").pack(anchor="w", padx=30, pady=(0, 12))
+        ctk.CTkLabel(self.view_cursors, text=T["cursor_title"], font=ctk.CTkFont(size=22, weight="bold")).pack(anchor="w", padx=30, pady=(20, 5))
+        ctk.CTkLabel(self.view_cursors, text=T["cursor_description"], text_color="gray").pack(anchor="w", padx=30, pady=(0, 12))
 
         cur_pack_bar = ctk.CTkFrame(self.view_cursors)
         cur_pack_bar.pack(fill="x", padx=30, pady=(0, 12))
-        ctk.CTkLabel(cur_pack_bar, text="📦 Cursor Pack (.zip):", font=ctk.CTkFont(size=14, weight="bold")).pack(side="left", padx=15, pady=12)
-        ctk.CTkButton(cur_pack_bar, text="📥 Import Cursor Pack (.zip)", fg_color="#2FA572", hover_color="#106A43", command=self.import_cursor_pack_zip).pack(side="left", padx=8, pady=12)
-        ctk.CTkButton(cur_pack_bar, text="📤 Export Cursor Pack (.zip)", command=self.export_cursor_pack_zip).pack(side="left", padx=8, pady=12)
+        ctk.CTkLabel(cur_pack_bar, text=f"📦 {T['cursor_pack']}:", font=ctk.CTkFont(size=14, weight="bold")).pack(side="left", padx=15, pady=12)
+        ctk.CTkButton(cur_pack_bar, text=f"📥 {T['import_cursor_pack']}", fg_color="#2FA572", hover_color="#106A43", command=self.import_cursor_pack_zip).pack(side="left", padx=8, pady=12)
+        ctk.CTkButton(cur_pack_bar, text=f"💾 {T['export_cursor_pack']}", command=self.export_cursor_pack_zip).pack(side="left", padx=8, pady=12)
 
-        self._create_cursor_row(self.view_cursors, "🖱️ Normal Select (Arrow)", "Arrow")
-        self._create_cursor_row(self.view_cursors, "🔗 Link Select (Hand)", "Hand")
-        self._create_cursor_row(self.view_cursors, "📝 Text Select (IBeam)", "IBeam")
-        self._create_cursor_row(self.view_cursors, "⏳ Working in Background (AppStarting)", "AppStarting")
+        self._create_cursor_row(self.view_cursors, f"🖱️ {T['cursor_normal']}", "Arrow")
+        self._create_cursor_row(self.view_cursors, f"🔗 {T['cursor_link']}", "Hand")
+        self._create_cursor_row(self.view_cursors, f"📝 {T['cursor_text']}", "IBeam")
+        self._create_cursor_row(self.view_cursors, f"⏳ {T['cursor_working']}", "AppStarting")
 
         # --- CURSOR CREATOR FROM IMAGE ---
         gen_frame = ctk.CTkFrame(self.view_cursors)
         gen_frame.pack(fill="x", padx=30, pady=(18, 20))
 
-        ctk.CTkLabel(gen_frame, text="✨ Create Custom Windows Cursor (.cur) from Image (PNG / JPG / WEBP)", font=ctk.CTkFont(size=16, weight="bold")).pack(anchor="w", padx=15, pady=(12, 4))
-        ctk.CTkLabel(gen_frame, text="Select any image, set the click Hotspot (X, Y) coordinates and cursor size, and convert directly into a native Windows cursor.", text_color="gray", font=ctk.CTkFont(size=12)).pack(anchor="w", padx=15, pady=(0, 10))
+        ctk.CTkLabel(gen_frame, text=f"✨ {T['cursor_creator_title']}", font=ctk.CTkFont(size=16, weight="bold")).pack(anchor="w", padx=15, pady=(12, 4))
+        ctk.CTkLabel(gen_frame, text=T["cursor_creator_description"], text_color="gray", font=ctk.CTkFont(size=12)).pack(anchor="w", padx=15, pady=(0, 10))
 
         gen_top = ctk.CTkFrame(gen_frame, fg_color="transparent")
         gen_top.pack(fill="x", padx=15, pady=5)
 
-        ctk.CTkButton(gen_top, text="🖼️ Select Source Image...", command=self.pick_cursor_gen_image).pack(side="left", padx=(0, 12))
-        self.lbl_cur_gen_src = ctk.CTkLabel(gen_top, text="No image selected", text_color="gray")
+        ctk.CTkButton(gen_top, text=f"🖼️ {T['select_source_image']}", command=self.pick_cursor_gen_image).pack(side="left", padx=(0, 12))
+        self.lbl_cur_gen_src = ctk.CTkLabel(gen_top, text=T["no_image_selected"], text_color="gray")
         self.lbl_cur_gen_src.pack(side="left", padx=(0, 15))
         self.cur_gen_preview_lbl = ctk.CTkLabel(gen_top, text="")
         self.cur_gen_preview_lbl.pack(side="right", padx=15)
@@ -1232,20 +1687,20 @@ class ThemeApp(ctk.CTk):
         gen_opts = ctk.CTkFrame(gen_frame, fg_color="transparent")
         gen_opts.pack(fill="x", padx=15, pady=8)
 
-        ctk.CTkLabel(gen_opts, text="Target Role:").pack(side="left", padx=(0, 6))
+        ctk.CTkLabel(gen_opts, text=f"{T['target_role']}:").pack(side="left", padx=(0, 6))
         self.cur_gen_role_var = ctk.StringVar(value="Arrow")
         ctk.CTkComboBox(gen_opts, variable=self.cur_gen_role_var, values=["Arrow", "Hand", "IBeam", "AppStarting"], width=120).pack(side="left", padx=(0, 15))
 
-        ctk.CTkLabel(gen_opts, text="Size:").pack(side="left", padx=(0, 6))
+        ctk.CTkLabel(gen_opts, text=f"{T['cursor_size']}:").pack(side="left", padx=(0, 6))
         self.cur_gen_size_var = ctk.StringVar(value="32")
         ctk.CTkComboBox(gen_opts, variable=self.cur_gen_size_var, values=["32", "48", "64"], width=75, command=lambda _: self._update_cursor_gen_preview()).pack(side="left", padx=(0, 15))
 
-        ctk.CTkLabel(gen_opts, text="Hotspot X:").pack(side="left", padx=(0, 6))
+        ctk.CTkLabel(gen_opts, text=f"{T['hotspot_x']}:").pack(side="left", padx=(0, 6))
         self.cur_gen_hx_var = tk.IntVar(value=0)
         self.cur_hx_slider = ctk.CTkSlider(gen_opts, from_=0, to=63, width=100, variable=self.cur_gen_hx_var, command=lambda _: self._update_cursor_gen_preview())
         self.cur_hx_slider.pack(side="left", padx=(0, 10))
 
-        ctk.CTkLabel(gen_opts, text="Hotspot Y:").pack(side="left", padx=(0, 6))
+        ctk.CTkLabel(gen_opts, text=f"{T['hotspot_y']}:").pack(side="left", padx=(0, 6))
         self.cur_gen_hy_var = tk.IntVar(value=0)
         self.cur_hy_slider = ctk.CTkSlider(gen_opts, from_=0, to=63, width=100, variable=self.cur_gen_hy_var, command=lambda _: self._update_cursor_gen_preview())
         self.cur_hy_slider.pack(side="left", padx=(0, 10))
@@ -1257,11 +1712,11 @@ class ThemeApp(ctk.CTk):
         gen_actions.pack(fill="x", padx=15, pady=(6, 15))
 
         ctk.CTkButton(
-            gen_actions, text="⚡ Generate .CUR & Apply Immediately", fg_color="#2FA572", hover_color="#106A43",
+            gen_actions, text=f"⚡ {T['generate_cursor']}", fg_color="#2FA572", hover_color="#106A43",
             command=lambda: self.generate_cursor_from_image(apply_now=True)
         ).pack(side="left", padx=(0, 12))
         ctk.CTkButton(
-            gen_actions, text="💾 Save .CUR File As...", fg_color="#444444", hover_color="#333333",
+            gen_actions, text=f"💾 {T['save_cursor_as']}", fg_color="#444444", hover_color="#333333",
             command=lambda: self.generate_cursor_from_image(apply_now=False)
         ).pack(side="left")
 
@@ -1269,14 +1724,14 @@ class ThemeApp(ctk.CTk):
         # 5. FOLDER ICONS
         # =========================================================
         self.view_folders = ctk.CTkFrame(self, corner_radius=12)
-        ctk.CTkLabel(self.view_folders, text="Folder Customization (desktop.ini)", font=ctk.CTkFont(size=22, weight="bold")).pack(anchor="w", padx=30, pady=(25, 5))
-        ctk.CTkLabel(self.view_folders, text="Drag & Drop a folder and a PNG/ICO image directly to this window or browse below.", text_color="gray").pack(anchor="w", padx=30, pady=(0, 15))
+        ctk.CTkLabel(self.view_folders, text=T["folder_title"], font=ctk.CTkFont(size=22, weight="bold")).pack(anchor="w", padx=30, pady=(25, 5))
+        ctk.CTkLabel(self.view_folders, text=T["folder_description"], text_color="gray").pack(anchor="w", padx=30, pady=(0, 15))
 
         self.drop_zone = ctk.CTkFrame(self.view_folders, height=130, border_width=2, border_color="#3B8ED0")
         self.drop_zone.pack(fill="x", padx=30, pady=10)
         self.drop_zone.pack_propagate(False)
 
-        self.drop_label = ctk.CTkLabel(self.drop_zone, text="📥 Drag a folder or icon (.png / .ico) here", font=ctk.CTkFont(size=16, weight="bold"), text_color="#3B8ED0")
+        self.drop_label = ctk.CTkLabel(self.drop_zone, text=f"📁 {T['folder_dropzone']}", font=ctk.CTkFont(size=16, weight="bold"), text_color="#3B8ED0")
         self.drop_label.place(relx=0.5, rely=0.5, anchor="center")
 
         status_frame = ctk.CTkFrame(self.view_folders)
@@ -1284,24 +1739,24 @@ class ThemeApp(ctk.CTk):
 
         f_row = ctk.CTkFrame(status_frame, fg_color="transparent")
         f_row.pack(fill="x", padx=15, pady=(12, 6))
-        ctk.CTkLabel(f_row, text="Target Folder:", font=ctk.CTkFont(weight="bold"), width=110, anchor="w").pack(side="left")
-        self.lbl_folder_path = ctk.CTkLabel(f_row, text="Not selected", text_color="gray", anchor="w")
+        ctk.CTkLabel(f_row, text=f"{T['target_folder']}:", font=ctk.CTkFont(weight="bold"), width=110, anchor="w").pack(side="left")
+        self.lbl_folder_path = ctk.CTkLabel(f_row, text=T["not_selected"], text_color="gray", anchor="w")
         self.lbl_folder_path.pack(side="left", fill="x", expand=True, padx=10)
-        ctk.CTkButton(f_row, text="Browse folder...", width=120, command=self.browse_folder).pack(side="right")
+        ctk.CTkButton(f_row, text=T["browse_folder"], width=120, command=self.browse_folder).pack(side="right")
 
         i_row = ctk.CTkFrame(status_frame, fg_color="transparent")
         i_row.pack(fill="x", padx=15, pady=(6, 12))
-        ctk.CTkLabel(i_row, text="New Icon:", font=ctk.CTkFont(weight="bold"), width=110, anchor="w").pack(side="left")
-        self.lbl_folder_icon = ctk.CTkLabel(i_row, text="Not selected", text_color="gray", anchor="w")
+        ctk.CTkLabel(i_row, text=f"{T['new_icon']}:", font=ctk.CTkFont(weight="bold"), width=110, anchor="w").pack(side="left")
+        self.lbl_folder_icon = ctk.CTkLabel(i_row, text=T["not_selected"], text_color="gray", anchor="w")
         self.lbl_folder_icon.pack(side="left", fill="x", expand=True, padx=10)
         self.folder_icon_preview = ctk.CTkLabel(i_row, text="")
         self.folder_icon_preview.pack(side="left", padx=10)
-        ctk.CTkButton(i_row, text="Browse image...", width=120, command=self.browse_folder_icon).pack(side="right")
+        ctk.CTkButton(i_row, text=T["browse_image"], width=120, command=self.browse_folder_icon).pack(side="right")
 
         action_row = ctk.CTkFrame(self.view_folders, fg_color="transparent")
         action_row.pack(fill="x", padx=30, pady=15)
-        ctk.CTkButton(action_row, text="✨ Set Folder Icon", height=40, font=ctk.CTkFont(size=14, weight="bold"), command=self.apply_folder_icon).pack(side="left", expand=True, fill="x", padx=(0, 10))
-        ctk.CTkButton(action_row, text="Restore Default Folder Icon", height=40, fg_color="#444444", hover_color="#333333", command=self.clear_folder_icon).pack(side="right", padx=(10, 0))
+        ctk.CTkButton(action_row, text=f"✨ {T['set_folder_icon']}", height=40, font=ctk.CTkFont(size=14, weight="bold"), command=self.apply_folder_icon).pack(side="left", expand=True, fill="x", padx=(0, 10))
+        ctk.CTkButton(action_row, text=T["restore_folder_icon"], height=40, fg_color="#444444", hover_color="#333333", command=self.clear_folder_icon).pack(side="right", padx=(10, 0))
 
         # =========================================================
         # 6. BATCH IMAGE MANAGEMENT
@@ -1312,18 +1767,18 @@ class ThemeApp(ctk.CTk):
         # =========================================================
         # 7. THEME PROFILES, FULL ZIP PACKS & AUTO DAY/NIGHT SCHEDULER
         # =========================================================
+
         self.view_profiles = ctk.CTkScrollableFrame(self, corner_radius=12)
-        ctk.CTkLabel(self.view_profiles, text="Theme Profiles, Full Theme Packs (.zip) & Day/Night Scheduler", font=ctk.CTkFont(size=22, weight="bold")).pack(anchor="w", padx=30, pady=(20, 5))
-        ctk.CTkLabel(self.view_profiles, text="Save JSON profiles, bundle complete portable Theme Packs (.zip), or automate Day/Night switching.", text_color="gray").pack(anchor="w", padx=30, pady=(0, 12))
+        ctk.CTkLabel(self.view_profiles, text=T["profiles_main_title"], font=ctk.CTkFont(size=22, weight="bold")).pack(anchor="w", padx=30, pady=(20, 5))
 
         save_box = ctk.CTkFrame(self.view_profiles)
         save_box.pack(fill="x", padx=30, pady=5)
-        self.entry_profile_name = ctk.CTkEntry(save_box, placeholder_text="Enter new profile name...", height=36)
+        self.entry_profile_name = ctk.CTkEntry(save_box, placeholder_text=T["enter_profile_name"], height=36)
         self.entry_profile_name.pack(side="left", fill="x", expand=True, padx=(15, 10), pady=12)
-        ctk.CTkButton(save_box, text="💾 Save Profile", height=36, command=self.save_current_profile).pack(side="left", padx=(0, 8), pady=12)
-        ctk.CTkButton(save_box, text="📂 Import .json", width=110, height=36, fg_color="#444444", hover_color="#333333", command=self.import_external_profile).pack(side="left", padx=(0, 8), pady=12)
-        ctk.CTkButton(save_box, text="📦 Export Theme .zip", width=145, height=36, fg_color="#2FA572", hover_color="#106A43", command=self.export_full_theme_pack_zip).pack(side="left", padx=(0, 8), pady=12)
-        ctk.CTkButton(save_box, text="📥 Import Theme .zip", width=145, height=36, command=self.import_full_theme_pack_zip).pack(side="right", padx=(0, 15), pady=12)
+        ctk.CTkButton(save_box, text=f"💾 {T['save_profile']}", height=36, command=self.save_current_profile).pack(side="left", padx=(0, 8), pady=12)
+        ctk.CTkButton(save_box, text=f"📂 {T['import_json']}", width=110, height=36, fg_color="#444444", hover_color="#333333", command=self.import_external_profile).pack(side="left", padx=(0, 8), pady=12)
+        ctk.CTkButton(save_box, text=f"📦 {T['export_theme_zip']}", width=145, height=36, fg_color="#2FA572", hover_color="#106A43", command=self.export_full_theme_pack_zip).pack(side="left", padx=(0, 8), pady=12)
+        ctk.CTkButton(save_box, text=f"📥 {T['import_theme_zip']}", width=145, height=36, command=self.import_full_theme_pack_zip).pack(side="right", padx=(0, 15), pady=12)
 
         # --- AUTO DAY / NIGHT SCHEDULER ---
         sched_frame = ctk.CTkFrame(self.view_profiles)
@@ -1332,40 +1787,40 @@ class ThemeApp(ctk.CTk):
         sched_top = ctk.CTkFrame(sched_frame, fg_color="transparent")
         sched_top.pack(fill="x", padx=15, pady=(10, 4))
 
-        ctk.CTkLabel(sched_top, text="🌗 Automatic Day / Night Theme Switcher:", font=ctk.CTkFont(size=15, weight="bold")).pack(side="left")
+        ctk.CTkLabel(sched_top, text=f"🌗 {T['auto_day_night_title']}", font=ctk.CTkFont(size=15, weight="bold")).pack(side="left")
         self.auto_dn_var = tk.BooleanVar(value=False)
         ctk.CTkSwitch(
-            sched_top, text="Enable Auto Day/Night Schedule", variable=self.auto_dn_var,
+            sched_top, text=T["enable_auto_schedule"], variable=self.auto_dn_var,
             command=self.on_toggle_day_night_schedule
         ).pack(side="right")
 
         sched_row = ctk.CTkFrame(sched_frame, fg_color="transparent")
         sched_row.pack(fill="x", padx=15, pady=(4, 12))
 
-        ctk.CTkLabel(sched_row, text="☀️ Day Profile:").pack(side="left", padx=(0, 6))
+        ctk.CTkLabel(sched_row, text=f"☀️ {T['day_profile']}").pack(side="left", padx=(0, 6))
         self.day_prof_var = ctk.StringVar(value="")
         self.day_prof_combo = ctk.CTkComboBox(sched_row, variable=self.day_prof_var, values=[""], width=150)
         self.day_prof_combo.pack(side="left", padx=(0, 10))
 
-        ctk.CTkLabel(sched_row, text="Start (HH:MM):").pack(side="left", padx=(0, 6))
+        ctk.CTkLabel(sched_row, text=T["start_time"]).pack(side="left", padx=(0, 6))
         self.day_time_entry = ctk.CTkEntry(sched_row, width=65)
         self.day_time_entry.pack(side="left", padx=(0, 20))
         self.day_time_entry.insert(0, "07:00")
 
-        ctk.CTkLabel(sched_row, text="🌙 Night Profile:").pack(side="left", padx=(0, 6))
+        ctk.CTkLabel(sched_row, text=f"🌙 {T['night_profile']}").pack(side="left", padx=(0, 6))
         self.night_prof_var = ctk.StringVar(value="")
         self.night_prof_combo = ctk.CTkComboBox(sched_row, variable=self.night_prof_var, values=[""], width=150)
         self.night_prof_combo.pack(side="left", padx=(0, 10))
 
-        ctk.CTkLabel(sched_row, text="Start (HH:MM):").pack(side="left", padx=(0, 6))
+        ctk.CTkLabel(sched_row, text=T["start_time"]).pack(side="left", padx=(0, 6))
         self.night_time_entry = ctk.CTkEntry(sched_row, width=65)
         self.night_time_entry.pack(side="left", padx=(0, 12))
         self.night_time_entry.insert(0, "20:00")
 
-        self.sched_status_lbl = ctk.CTkLabel(sched_frame, text="Scheduler status: Inactive", text_color="gray", font=ctk.CTkFont(size=12))
+        self.sched_status_lbl = ctk.CTkLabel(sched_frame, text=T["scheduler_status_inactive"], text_color="gray", font=ctk.CTkFont(size=12))
         self.sched_status_lbl.pack(anchor="w", padx=15, pady=(0, 10))
 
-        ctk.CTkLabel(self.view_profiles, text="Saved Profiles:", font=ctk.CTkFont(size=15, weight="bold")).pack(anchor="w", padx=30, pady=(10, 5))
+        ctk.CTkLabel(self.view_profiles, text=T["saved_profiles"], font=ctk.CTkFont(size=15, weight="bold")).pack(anchor="w", padx=30, pady=(10, 5))
         self.profiles_list_frame = ctk.CTkScrollableFrame(self.view_profiles, height=280)
         self.profiles_list_frame.pack(fill="both", expand=True, padx=30, pady=(0, 20))
 
@@ -1373,19 +1828,19 @@ class ThemeApp(ctk.CTk):
         row = ctk.CTkFrame(parent)
         row.pack(fill="x", padx=30, pady=8)
         ctk.CTkLabel(row, text=title, font=ctk.CTkFont(size=15, weight="bold"), width=180, anchor="w").pack(side="left", padx=15, pady=15)
-        preview_lbl = ctk.CTkLabel(row, text="Default / Current", text_color="gray")
+        preview_lbl = ctk.CTkLabel(row, text=T["default_current"], text_color="gray")
         preview_lbl.pack(side="left", padx=10)
         self.icon_preview_labels[tag] = preview_lbl
-        ctk.CTkButton(row, text="Change Icon...", width=140, command=lambda: self.pick_icon(clsid, tag, is_bin, preview_lbl)).pack(side="right", padx=15, pady=15)
+        ctk.CTkButton(row, text=T["change_icon"], width=140, command=lambda: self.pick_icon(clsid, tag, is_bin, preview_lbl)).pack(side="right", padx=15, pady=15)
 
     def _create_cursor_row(self, parent, title, cursor_key):
         row = ctk.CTkFrame(parent)
         row.pack(fill="x", padx=30, pady=6)
         ctk.CTkLabel(row, text=title, font=ctk.CTkFont(size=15, weight="bold"), width=250, anchor="w").pack(side="left", padx=15, pady=12)
-        lbl_path = ctk.CTkLabel(row, text="Default Cursor", text_color="gray", anchor="w")
+        lbl_path = ctk.CTkLabel(row, text=T["default_cursor"], text_color="gray", anchor="w")
         lbl_path.pack(side="left", fill="x", expand=True, padx=10)
         self.cursor_labels[cursor_key] = lbl_path
-        ctk.CTkButton(row, text="Select .cur / .ani...", width=150, command=lambda: self.pick_cursor_file(cursor_key, lbl_path)).pack(side="right", padx=15, pady=12)
+        ctk.CTkButton(row, text=T["select_cursor"], width=150, command=lambda: self.pick_cursor_file(cursor_key, lbl_path)).pack(side="right", padx=15, pady=12)
 
     def show_view(self, name: str):
         self.active_view = name
@@ -1532,6 +1987,25 @@ class ThemeApp(ctk.CTk):
     # =========================================================
     # FONTS & COLORS
     # =========================================================
+    def apply_font_hex_color(self):
+        hex_color = self.font_hex_entry.get().strip().upper()
+        if not hex_color.startswith("#"):
+            hex_color = "#" + hex_color
+
+        if len(hex_color) != 7:
+            messagebox.showerror("Invalid HEX", "HEX color must be in format #RRGGBB")
+            return
+
+        try:
+            int(hex_color[1:], 16)
+        except ValueError:
+            messagebox.showerror("Invalid HEX", "HEX color is not valid.")
+            return
+
+        self.current_state["font_color"] = hex_color
+        self.font_color_swatch.configure(fg_color=hex_color)
+        self.update_demo_text()
+    
     def apply_font(self, choice=None):
         font_name = self.font_var.get()
         self.current_state["font_family"] = font_name
@@ -1547,6 +2021,38 @@ class ThemeApp(ctk.CTk):
             hex_upper = color[1].upper()
             self.current_state["font_color"] = hex_upper
             self.font_color_swatch.configure(fg_color=hex_upper)
+            
+            # Päivitetään myös tekstikenttä
+            if hasattr(self, 'font_hex_entry'):
+                self.font_hex_entry.delete(0, "end")
+                self.font_hex_entry.insert(0, hex_upper)
+                
+            self.update_demo_text()
+          
+    def apply_font_hex_color(self):
+        hex_color = self.font_hex_entry.get().strip().upper()
+        if not hex_color.startswith("#"):
+            hex_color = "#" + hex_color
+
+        if len(hex_color) != 7:
+            messagebox.showerror("Invalid HEX", "HEX color must be in format #RRGGBB")
+            return
+
+        try:
+            int(hex_color[1:], 16)
+        except ValueError:
+            messagebox.showerror("Invalid HEX", "HEX color is not valid.")
+            return
+
+        self.current_state["font_color"] = hex_color
+        self.font_color_swatch.configure(fg_color=hex_color)
+        self.update_demo_text()      
+            
+            # Päivitetään myös tekstikenttä
+        if hasattr(self, 'font_hex_entry'):
+            self.font_hex_entry.delete(0, "end")
+            self.font_hex_entry.insert(0, hex_upper)
+                
             self.update_demo_text()
 
     def update_demo_text(self):
@@ -1658,7 +2164,10 @@ class ThemeApp(ctk.CTk):
         self.gallery_images.clear()
 
         if hasattr(self, "lbl_gallery_dir"):
-            self.lbl_gallery_dir.configure(text=f"Current folder: {GALLERY_DIR}")
+            self.lbl_gallery_dir.configure(
+                text=f"{T['current_folder']}: {GALLERY_DIR}"
+            )
+
 
         if not os.path.exists(GALLERY_DIR):
             self.gallery_status_lbl.configure(text="Folder not found.", text_color="red")
@@ -1684,15 +2193,22 @@ class ThemeApp(ctk.CTk):
             return
 
         if not image_paths:
-            self.gallery_status_lbl.configure(text="No supported images found in this folder.", text_color="gray")
+            self.gallery_status_lbl.configure(
+                text=T["no_images_found"],
+                text_color="gray"
+            )
             return
+
 
         max_display = 36
         shown_count = min(len(image_paths), max_display)
         self.gallery_status_lbl.configure(
-            text=f"Showing {shown_count} of {len(image_paths)} images. Click image for full preview or use quick actions below.",
-            text_color="gray"
-        )
+            text=T["gallery_status"].format(
+                shown=shown_count,
+                total=len(image_paths)
+        ),
+        text_color="gray"
+)
 
         col_count = 3
         for i, fpath in enumerate(image_paths[:max_display]):
@@ -1720,11 +2236,11 @@ class ThemeApp(ctk.CTk):
                 btn_row1 = ctk.CTkFrame(card, fg_color="transparent")
                 btn_row1.pack(pady=(0, 3))
                 ctk.CTkButton(
-                    btn_row1, text="🖼️ Wallpaper", width=105, height=25, font=ctk.CTkFont(size=11),
+                    btn_row1, text=f"🖼️ {T['wallpaper_btn']}", width=105, height=25, font=ctk.CTkFont(size=11),
                     command=lambda p=fpath: self.set_wallpaper_from_gallery(p)
                 ).pack(side="left", padx=2)
                 ctk.CTkButton(
-                    btn_row1, text="🎨 Palette", width=105, height=25, font=ctk.CTkFont(size=11),
+                    btn_row1, text=f"🎨 {T['palette_btn']}", width=105, height=25, font=ctk.CTkFont(size=11),
                     fg_color="#2FA572", hover_color="#106A43",
                     command=lambda p=fpath: self.extract_palette_only_from_gallery(p)
                 ).pack(side="left", padx=2)
@@ -1732,12 +2248,12 @@ class ThemeApp(ctk.CTk):
                 btn_row2 = ctk.CTkFrame(card, fg_color="transparent")
                 btn_row2.pack(pady=(0, 8))
                 ctk.CTkButton(
-                    btn_row2, text="📁 Icon", width=105, height=25, font=ctk.CTkFont(size=11),
+                    btn_row2, text=f"📂 {T['icon_btn']}", width=105, height=25, font=ctk.CTkFont(size=11),
                     fg_color="#444444", hover_color="#333333",
                     command=lambda p=fpath: self.use_gallery_image_as_folder_icon(p)
                 ).pack(side="left", padx=2)
                 ctk.CTkButton(
-                    btn_row2, text="🖱️ To Cursor", width=105, height=25, font=ctk.CTkFont(size=11),
+                    btn_row2, text=f"🖱️ {T['cursor_btn']}", width=105, height=25, font=ctk.CTkFont(size=11),
                     fg_color="#444444", hover_color="#333333",
                     command=lambda p=fpath: self.send_image_to_cursor_creator(p)
                 ).pack(side="left", padx=2)
@@ -1970,12 +2486,12 @@ class ThemeApp(ctk.CTk):
     def _build_empty_palette_preview(self):
         for w in self.palette_container.winfo_children():
             w.destroy()
-        ctk.CTkLabel(self.palette_container, text="(Select wallpaper to see colors)", text_color="gray", font=ctk.CTkFont(size=12)).pack(side="left", padx=5)
+        ctk.CTkLabel(self.palette_container, text=f"({T['palette_hint']})", text_color="gray", font=ctk.CTkFont(size=12)).pack(side="left", padx=5)
 
     def _update_dynamic_palette(self, colors: list):
         for w in self.palette_container.winfo_children():
             w.destroy()
-        ctk.CTkLabel(self.palette_container, text="Shades:", font=ctk.CTkFont(size=12, weight="bold")).pack(side="left", padx=(5, 6))
+        ctk.CTkLabel(self.palette_container, text=f"{T['shades']}:", font=ctk.CTkFont(size=12, weight="bold")).pack(side="left", padx=(5, 6))
         for hex_val in colors:
             ctk.CTkButton(
                 self.palette_container, text="", width=26, height=26, corner_radius=13,
@@ -2231,10 +2747,10 @@ class ThemeApp(ctk.CTk):
     def refresh_profiles_list(self):
         for widget in self.profiles_list_frame.winfo_children():
             widget.destroy()
-        files = sorted([f for f in os.listdir(PROFILES_DIR) if f.endswith(".json")])
 
-        prof_names = [f[:-5] for f in files]
+        files = sorted([f for f in os.listdir(PROFILES_DIR) if f.endswith(".json")])
         if hasattr(self, "day_prof_combo"):
+            prof_names = [f[:-5] for f in files]
             self.day_prof_combo.configure(values=prof_names if prof_names else [""])
             self.night_prof_combo.configure(values=prof_names if prof_names else [""])
             if prof_names and not self.day_prof_var.get():
@@ -2243,7 +2759,7 @@ class ThemeApp(ctk.CTk):
                 self.night_prof_var.set(prof_names[-1])
 
         if not files:
-            ctk.CTkLabel(self.profiles_list_frame, text="No saved profiles.", text_color="gray").pack(pady=30)
+            ctk.CTkLabel(self.profiles_list_frame, text=T["no_saved_profiles"], text_color="gray").pack(pady=30)
             return
 
         for fname in files:
@@ -2255,18 +2771,25 @@ class ThemeApp(ctk.CTk):
                 continue
 
             prof_name = data.get("name", fname[:-5])
-            mode_txt = "🌙 Dark" if data.get("dark_mode", True) else "☀️ Light"
+            mode_txt = f"🌙 {T['dark']}" if data.get("dark_mode", True) else f"☀️ {T['light']}"
             accent_hex = data.get("accent_color", "#0078D4")
 
             card = ctk.CTkFrame(self.profiles_list_frame)
             card.pack(fill="x", padx=5, pady=6)
             ctk.CTkFrame(card, width=18, height=42, corner_radius=4, fg_color=accent_hex).pack(side="left", padx=(12, 5), pady=10)
+            
             info_frame = ctk.CTkFrame(card, fg_color="transparent")
             info_frame.pack(side="left", fill="x", expand=True, padx=10, pady=10)
+            
             ctk.CTkLabel(info_frame, text=prof_name, font=ctk.CTkFont(size=16, weight="bold"), anchor="w").pack(fill="x")
             ctk.CTkLabel(info_frame, text=f"{mode_txt}  •  🎨 {accent_hex}", text_color="gray", font=ctk.CTkFont(size=12), anchor="w").pack(fill="x")
-            ctk.CTkButton(card, text="Delete", width=70, fg_color="#6e1c1c", hover_color="#4a1212", command=lambda p=fpath: self.delete_profile(p)).pack(side="right", padx=(5, 15), pady=10)
-            ctk.CTkButton(card, text="⚡ Apply", width=130, font=ctk.CTkFont(weight="bold"), command=lambda d=data: self.apply_profile(d)).pack(side="right", padx=5, pady=10)
+            
+            ctk.CTkButton(card, text=T["delete"], width=70, fg_color="#6e1c1c", hover_color="#4a1212", command=lambda p=fpath: self.delete_profile(p)).pack(side="right", padx=(5, 15), pady=10)
+            ctk.CTkButton(card, text=f"⚡ {T['apply']}", width=130, font=ctk.CTkFont(weight="bold"), command=lambda d=data: self.apply_profile(d)).pack(side="right", padx=5, pady=10)
+
+    def apply_font_style(self, choice=None):
+        self.current_state["font_style"] = self.font_style_var.get()
+        self.update_demo_text()
 
     def apply_profile(self, data: dict, silent: bool = False):
         try:
@@ -2314,11 +2837,17 @@ class ThemeApp(ctk.CTk):
             if font_style:
                 self.font_style_var.set(font_style)
                 self.current_state["font_style"] = font_style
-
+            
             f_color = data.get("font_color")
             if f_color:
                 self.current_state["font_color"] = f_color
                 self.font_color_swatch.configure(fg_color=f_color)
+                
+                # Päivitetään tekstikenttä profiilia ladattaessa
+                if hasattr(self, 'font_hex_entry'):
+                    self.font_hex_entry.delete(0, "end")
+                    self.font_hex_entry.insert(0, f_color)
+            
             self.update_demo_text()
 
             cursors = data.get("cursors", {})
@@ -2342,6 +2871,13 @@ class ThemeApp(ctk.CTk):
             for folder_path, icon_path in data.get("folders", {}).items():
                 if os.path.exists(folder_path) and os.path.exists(icon_path):
                     WindowsThemeEngine.set_folder_icon(folder_path, icon_path, auto_refresh=False)
+
+            WindowsThemeEngine.refresh_shell()
+            if not silent:
+                messagebox.showinfo("Profile Applied", f"Theme profile '{data.get('name', '')}' applied successfully!")
+        except Exception as e:
+            if not silent:
+                messagebox.showerror("Error", f"Error loading profile:\n{e}")
 
             WindowsThemeEngine.refresh_shell()
             if not silent:

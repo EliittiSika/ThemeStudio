@@ -4,63 +4,61 @@
 
 ---
 
-## ✨ Key Features in V.2
+## 🆕 What's New in V2.1 / Uutta versiossa V2.1
+
+* **🎨 Precision Font HEX Input / Tarkka HEX-värisyöttö fonteille:** Set exact typography and UI preview colors using direct HEX code input alongside the color picker. / Määritä fonttien värit tarkasti syöttämällä suoraan HEX-värikoodi.
+* **🌍 Fully Bilingual UI (FI / EN) / Täysin kaksikielinen käyttöliittymä:** Automatic system language detection with complete Finnish and English translations across the entire suite. / Täydellinen suomen- ja englanninkielinen käyttöliittymä automaattisella kielentunnistuksella.
+* **📦 Updated V2.1 Installer:** Packaged into a clean standalone installer (`ThemeStudio_Installer_v2.1.exe`) via Inno Setup 7. / Valmis asennusohjelma (`ThemeStudio_Installer_v2.1.exe`).
+
+---
 
 ## 📸 Visual Tour & User Guide / Kuvallinen käyttöohje
 
 ### 1. Theme, Taskbar & Explorer (`01_Theme_and_Taskbar.png`)
 ![1. Theme, Taskbar & Explorer](Kuvaohjeet/01_Theme_and_Taskbar.png)
-* **EN:** Toggle Windows Dark Mode, apply live Win32 Taskbar glass effects (*Clear, Blur, Acrylic*), switch File Explorer color modes and compact spacing, extract a 5-shade accent palette from your wallpaper, preview system fonts in real time, and export colors to CSS or Tailwind.
-* **FI:** Hallitse Windowsin tummaa tilaa, tehtäväpalkin reaaliaikaisia lasitehosteita (*Clear, Blur, Acrylic*), Resurssienhallinnan teemaa ja tiivistettyä näkymää, taustakuvan 5 sävyn automaattista väripalettia, fonttien esikatselua sekä CSS / Tailwind -koodivientiä.
-
----
+* **EN:** Toggle Windows Dark Mode, apply live Win32 Taskbar glass effects (*Clear, Blur, Acrylic*), switch File Explorer color modes and compact spacing, extract a 5-shade accent palette from your wallpaper, preview system fonts with direct HEX color input in real time, and export colors to CSS or Tailwind.
+* **FI:** Hallitse Windowsin tummaa tilaa, tehtäväpalkin reaaliaikaisia lasitehosteita (*Clear, Blur, Acrylic*), Resurssienhallinnan teemaa ja tiivistettyä näkymää, taustakuvan 5 sävyn automaattista väripalettia, fonttien esikatselua suoralla HEX-värisyötöllä sekä CSS / Tailwind -koodivientiä.
 
 ### 2. Interactive Image Gallery (`02_Image_Gallery.png`)
 ![2. Interactive Image Gallery](Kuvaohjeet/02_Image_Gallery.png)
 * **EN:** Browse wallpapers across folders and subfolders, open full-resolution Lightbox previews, extract color palettes without changing your active wallpaper, or send any image directly to the Cursor Creator.
 * **FI:** Selaa taustakuvia alikansioineen, avaa kuvat suurennetussa Lightbox-esikatselussa, poimi väripaletti suoraan kuvasta vaihtamatta taustakuvaa tai lähetä kuva yhdellä klikkauksella kursorinluontiin.
 
----
-
 ### 3. System Icons & Packs (`03_System_Icons.png`)
 ![3. System Icons & Packs](Kuvaohjeet/03_System_Icons.png)
 * **EN:** Customize desktop system icons (*This PC, Recycle Bin, User's Files*) using any `.png` or `.ico` file (automatically converted to multi-size `.ico`), and import or export portable `.zip` Icon Packs.
 * **FI:** Mukauta työpöydän järjestelmäkuvakkeet (*Tämä tietokone, Roskakori, Käyttäjän kansio*) suoraan `.png`- tai `.ico`-kuvilla ja tuo tai vie valmiita `.zip`-kuvakepaketteja.
-
----
 
 ### 4. Mouse Pointers & `.cur` Cursor Creator (`04_Cursors_and_Creator.png`)
 ![4. Mouse Pointers & Cursor Creator](Kuvaohjeet/04_Cursors_and_Creator.png)
 * **EN:** Assign custom `.cur` and `.ani` pointers to Windows cursor states, or convert any `.png`/`.jpg` image into a native Windows `.cur` cursor (`32x32`, `48x48`, `64x64`) with an interactive Hotspot `(X, Y)` crosshair preview.
 * **FI:** Vaihda Windowsin hiiriosoittimet (`.cur` / `.ani`) tai luo omia aitoja `.cur`-kursoreita suoraan mistä tahansa kuvasta säädettävällä klikkauspisteellä (Hotspot X, Y).
 
----
-
 ### 5. Custom Folder Icons — Drag & Drop (`05_Folder_Icons.png`)
 ![5. Custom Folder Icons](Kuvaohjeet/05_Folder_Icons.png)
 * **EN:** Drag and drop any folder and a `.png`/`.ico` image directly into the window to generate a multi-size icon and apply it immediately via hidden `desktop.ini` attributes.
 * **FI:** Raahaa (Drag & Drop) mikä tahansa kansio ja kuva suoraan ikkunaan, niin ohjelma luo monikokoisen kuvakkeen ja asettaa sen kansiolle automaattisesti `desktop.ini`-määrityksellä.
-
----
 
 ### 6. Batch Image Processing Studio (`06_Batch_Image_Processing.png`)
 ![6. Batch Image Processing Studio](Kuvaohjeet/06_Batch_Image_Processing.png)
 * **EN:** Batch convert entire folders of images (`PNG`, `JPEG`, `WEBP`, `BMP`, multi-size `ICO`), resize or center-crop to exact dimensions, auto-fix phone EXIF orientation, and strip metadata to save space.
 * **FI:** Muunna kokonaisten kansioiden kuvat eräajona eri formaatteihin (myös monikokoisiksi `.ico`-kuvakkeiksi), muuta kokoa, rajaa keskitetysti, korjaa puhelinkuvien EXIF-asento ja poista metadata.
 
----
-
 ### 7. Theme Profiles, `.ZIP` Packs & Day/Night Scheduler (`07_Profiles_and_Scheduler.png`)
 ![7. Theme Profiles & Scheduler](Kuvaohjeet/07_Profiles_and_Scheduler.png)
 * **EN:** Save and load complete desktop setups as JSON profiles, bundle self-contained `.zip` Theme Packs (including wallpaper, icons, and cursors) for easy sharing, and schedule automatic Day/Night theme switching.
 * **FI:** Tallenna koko työpöydän kokoonpano JSON-profiileiksi, pakkaa kaikki tiedostot jaettavaksi `.zip`-teemapaketiksi tai ajasta teema vaihtumaan automaattisesti päivä- ja yöajan mukaan.
+
+---
+
+## ✨ Key Features in V.2
 
 ### 1. 🎨 Theme, Taskbar Transparency & File Explorer Manager
 * **System & Explorer Theme Control:** Switch seamlessly between **Dark**, **Light**, and **Mixed (Dark System / Light Apps)** modes, and toggle **Compact File Explorer Spacing**. Includes a one-click `explorer.exe` restart utility.
 * **Live Taskbar Transparency & Glass Engine (Win32 DWM):** Apply real-time **Clear Transparent**, **Blur**, **Acrylic**, or **Opaque** composition effects directly to the Windows Taskbar (`Shell_TrayWnd`) with customizable opacity and a background keep-alive option.
 * **Smart Wallpaper & 5-Shade Palette Extraction:** Set desktop wallpapers with custom fit modes (*Fill, Fit, Stretch, Tile, Center, Span*) and automatically extract the 5 most vibrant, balanced accent shades into interactive palette buttons.
 * **Windows Accent Color Engine:** Dynamically generates a 32-byte 8-shade binary `AccentPalette` and updates DWM title bars, window borders, start menu, and taskbar colors on the fly.
-* **Typography & Live UI Preview:** Test fonts, styles (*Regular, Bold, Italic, Bold Italic*), and colors against a live interactive preview window before applying changes, complete with **Undo** support.
+* **Typography, HEX Color Input & Live UI Preview:** Test fonts, styles (*Regular, Bold, Italic, Bold Italic*), and exact HEX colors against a live interactive preview window before applying changes, complete with **Undo** support.
 * **Developer Export (CSS / Tailwind / JSON):** Export your active color palette and typography directly into ready-to-use `:root` CSS variables and `tailwind.config.js` snippets.
 
 ### 2. 🖼️ Interactive Image Gallery
@@ -93,36 +91,15 @@
 
 ---
 
-## 🛠️ Running & Building from Source
+## 📥 Installation & Building from Source
 
-### Prerequisites
-* Windows 10 / 11
-* Python 3.10+
+### Option 1: Standalone Windows Installer (Recommended)
+1. Download **`ThemeStudio_Installer_v2.1.exe`** from the [Releases](https://github.com/EliittiSika/ThemeStudio/releases) page.
+2. Run the installer to set up Theme Studio V.2 with Start Menu and optional Desktop shortcuts.
+
+### Option 2: Run or Build from Source
+* **Prerequisites:** Windows 10 / 11 and Python 3.10+
 
 Install dependencies inside your virtual environment:
 ```powershell
 .\.venv\Scripts\python.exe -m pip install customtkinter pillow windnd pyinstaller
-
-🇫🇮 Yhteenveto suomeksi (Theme Studio V.2)
-Theme Studio V.2 on monipuolinen Windowsin kustomointi-, teema- ja kuvankäsittelyohjelmisto:
-
-Teemat, tehtäväpalkin läpinäkyvyys & Resurssienhallinta: Hallitse tummaa/vaaleaa tilaa, tehtäväpalkin reaaliaikaista lasi-/läpinäkyvyystehostetta (Clear, Blur, Acrylic) sekä taustakuvasta automaattisesti poimittavaa 5 sävyn väripalettia.
-
-Kehittäjävienti: Vie väripaletti ja fontit suoraan CSS-muuttujiksi tai Tailwind-asetuksiksi.
-
-Kuvagalleria: Selaa taustakuvia alikansioineen, esikatsele täydessä koossa, poimi pelkkä väripaletti tai lähetä kuva suoraan kursorityökaluun.
-
-Järjestelmä- ja kansiokuvakkeet + Icon Pack (.zip): Vaihda työpöydän järjestelmäkuvakkeet ja kansioiden kuvakkeet (Drag & Drop) tai tuo/vie kuvakepaketteja .zip-muodossa.
-
-Hiiriosoittimet, Cursor Pack (.zip) & Kursorinluonti kuvasta: Luo aitoja .cur-osoittimia mistä tahansa kuvasta säädettävällä Hotspot (X, Y) -tähtäimellä.
-
-Kuvien massakäsittely: Muunna, rajaa ja skaalaa kokonaisia kuvakansioita (PNG, JPEG, WEBP, BMP, ICO, CUR).
-
-Profiilit, Theme Pack (.zip) & Päivä/Yö-ajastin: Tallenna teemat JSON-profiileiksi, jaa koko teema tiedostoineen yhtenä .zip-pakettina ja ajasta automaattinen päivä- ja yöteeman vaihto.
-
-📄 Copyright & License
-Copyright © 2026 Tommi Jalkanen. All rights reserved.
-
-Contact: tommi.jalkanen@gmail.com
-
-This software and its source code are proprietary. See the License file for details.
